@@ -58,8 +58,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <form th:action="@{/board/getBoardList}" method="post">
 		<input type="hidden" name="searchKeyword" th:value="${gsk}">
-	<th:block th:each="numb : ${#numbers.sequence(0, boardList.getTotalPages()-1)}">
-		<input type="submit" name="num" th:value="${numb}+1">		
+	<th:block th:each="numb : ${#numbers.sequence(1, boardList.getTotalPages())}">
+		<input type="submit" name="num" th:value="${numb}">		
 	</th:block>
 </form>
 
