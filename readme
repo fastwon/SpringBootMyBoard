@@ -1,0 +1,2 @@
+db로 h2 database 사용
+프로젝트 실행하기 전 h2 database를 다운받은 후 h2w.bat 파일을 실행하여 h2 database를 실행해야함
