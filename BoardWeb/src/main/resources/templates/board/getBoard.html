@@ -42,5 +42,48 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <a th:href="@{/board/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/board/deleteBoard(seq=${board.seq})}">글삭제</a>&nbsp;&nbsp;&nbsp;
 <a th:href="@{/board/getBoardList}">글목록</a>
+
+<hr>
+
+<h2>댓글</h2>
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+<tr>
+	<th bgcolor="orange" width="50">작성자</th>
+	<th bgcolor="orange" width="400">내용</th>
+	<th bgcolor="orange" width="100">등록일</th>
+	<th bgcolor="orange" width="100"></th>
+</tr>
+<tr th:each="cmt : ${commentList}">
+	<td th:text="${cmt.cmtWriter}" th:align="center"></td>
+	<td th:text="${cmt.cmtContent}" th:align="center"></td>
+	<td th:text="${#dates.format(cmt.cmtCreateDate, 'yyyy-MM-dd')}" th:align="center"></td>
+</tr>
+</table>
+
+<form th:action="@{/board/getBoard}" method="get">
+	<input name="board" type="hidden" th:value="${board.seq}">
+	<th:block th:each="numb : ${#numbers.sequence(1, commentList.getTotalPages())}">
+		<input type="submit" name="cmtPage" th:value="${numb}">		
+	</th:block>
+</form>
+
+<hr>
+
+<form th:action="@{/comment/insertComment}" method="post">
+	<input name="board" type="hidden" th:value="${board.seq}">
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+	<tr>
+		<td bgcolor="orange" width="50">작성자</td>
+		<td bgcolor="orange" width="400" align="center">내용</td>
+		<td rowspan="2" align="center">
+			<input type="submit" value="댓글 등록">
+		</td>
+	</tr>
+	<tr>
+		<td><span sec:authentication="principal.member.name"></span></td>
+		<td><textarea name="cmtContent" cols="54" rows="2"></textarea></td>
+	</tr>
+</table>
+</form>
 </body>
 </html>

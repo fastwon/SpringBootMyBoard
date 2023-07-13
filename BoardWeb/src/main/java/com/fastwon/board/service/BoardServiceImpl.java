@@ -31,6 +31,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		findBoard.setTitle(board.getTitle());
 		findBoard.setContent(board.getContent());
+		
 		boardRepo.save(findBoard);
 		
 	}
