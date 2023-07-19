@@ -34,7 +34,8 @@ public class CommentServiceImpl implements CommentService {
 	
 	@Override
 	public void deleteComment(Comment comment) {
-		// TODO Auto-generated method stub
+		commentRepo.deleteById(comment.getCmtId());
+		System.out.println("서비스 실행 된다.");
 		
 	}
 	

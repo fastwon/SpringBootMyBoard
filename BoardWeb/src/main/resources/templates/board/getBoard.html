@@ -57,6 +57,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<td th:text="${cmt.cmtWriter}" th:align="center"></td>
 	<td th:text="${cmt.cmtContent}" th:align="center"></td>
 	<td th:text="${#dates.format(cmt.cmtCreateDate, 'yyyy-MM-dd')}" th:align="center"></td>
+	<td align="center"><a th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId})}">삭제</a></td>
 </tr>
 </table>
 
