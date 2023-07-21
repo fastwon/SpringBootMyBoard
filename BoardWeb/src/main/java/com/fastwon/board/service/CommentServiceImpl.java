@@ -27,9 +27,14 @@ public class CommentServiceImpl implements CommentService {
 	}
 	
 	@Override
-	public void updateComment(Comment comment) {
-		// TODO Auto-generated method stub
+	public Comment updateComment(Comment comment) {
+		Comment comment1 = commentRepo.findById(comment.getCmtId()).get();
 		
+		comment1.setCmtContent(comment.getCmtContent());
+		
+		commentRepo.save(comment1);
+		
+		return comment1;
 	}
 	
 	@Override

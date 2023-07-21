@@ -51,13 +51,17 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<th bgcolor="orange" width="50">작성자</th>
 	<th bgcolor="orange" width="400">내용</th>
 	<th bgcolor="orange" width="100">등록일</th>
-	<th bgcolor="orange" width="100"></th>
+	<th bgcolor="orange" width="100" colspan="2"></th>
 </tr>
 <tr th:each="cmt : ${commentList}">
+<form th:action="@{/comment/updateComment}" method="post">
+	<input name="cmtId" type="hidden" th:value="${cmt.cmtId}">
 	<td th:text="${cmt.cmtWriter}" th:align="center"></td>
-	<td th:text="${cmt.cmtContent}" th:align="center"></td>
+	<td th:align="center"><textarea name="cmtContent" th:text="${cmt.cmtContent}" cols="54" rows="2"></textarea></td>
 	<td th:text="${#dates.format(cmt.cmtCreateDate, 'yyyy-MM-dd')}" th:align="center"></td>
-	<td align="center"><a th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId})}">삭제</a></td>
+	<td align="center"><input type="submit" th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" value="수정"></input></td>
+</form>
+	<td align="center"><a th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId}, board.seq=${cmt.board.getSeq()})}">삭제</a></td>
 </tr>
 </table>
 
