@@ -43,7 +43,12 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public Board getBoard(Board board) {
-		return boardRepo.findById(board.getSeq()).get();
+		Board findBoard = boardRepo.findById(board.getSeq()).get();
+		findBoard.setCnt(findBoard.getCnt() + 1);
+		
+		boardRepo.save(findBoard);
+		
+		return findBoard;
 	}
 	
 	@Override
@@ -58,7 +63,7 @@ public class BoardServiceImpl implements BoardService {
 			builder.and(qboard.content.like("%" + search.getSearchKeyword() + "%"));
 		}
 		
-		Pageable pageable = PageRequest.of(pn.getNum()-1, 10, Sort.Direction.DESC, "seq");
+		Pageable pageable = PageRequest.of(pn.getNum()-1, 10, Sort.Direction.DESC, "createDate");
 		return boardRepo.findAll(builder, pageable);
 	}
 

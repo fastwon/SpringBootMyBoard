@@ -36,7 +36,7 @@ public class Board {
 	@Column(updatable = false)
 	private Date createDate = new Date();
 	
-	@Column(updatable = false)
+//	@Column(updatable = false)
 	private Long cnt = 0L;
 	
 	@ManyToOne
