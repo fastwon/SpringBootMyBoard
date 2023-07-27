@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Sign Up</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script type="text/javascript" src="/js/FastValidChecker.js"></script>
+	<script type="text/javascript" src="/js/SignUpCheck.js"></script>
+</head>
+
+<body th:align="center">
+<h1>회원가입</h1>
+<form name="signUpForm" th:action="@{/member/createMember}" method="post" th:onsubmit="return checkValid()">
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+	
+	<tr>
+		<td bgcolor="orange">아이디</td>
+		<td><input type="text" name="id"/></td>
+	</tr>
+	<tr>
+		<td bgcolor="orange">비밀번호</td>
+		<td><input type="password" name="password"/></td>
+	</tr>
+	<tr>
+		<td bgcolor="orange">이름</td>
+		<td><input type="text" name="name"/></td>
+	</tr>
+	<tr>
+		<td><input type="hidden" name="role" value="ROLE_MEMBER"></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center">
+			<input type="submit" value="회원가입"/>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>

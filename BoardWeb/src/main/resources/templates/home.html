@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<title>메인 페이지</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+	<br>
+	<h3 align="center">xxxxFastwon Board~~~~</h3>
+	<table></table>
+	<hr>
+	<p align="center"><a href="board/getBoardList">글 목록 바로가기</a></p>
+	<p sec:authorize="isAnonymous()" align="center"><a href="system/login">로그인</a>/<a href="member/createMember">회원가입</a></p>
+	<p align="center"><a sec:authorize="isAuthenticated()" href="system/logout">로그아웃</a></p>
+	
+	<br>
+	<hr>
+</body>
+</html>
