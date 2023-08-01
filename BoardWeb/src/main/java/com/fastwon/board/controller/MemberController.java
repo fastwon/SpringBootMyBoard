@@ -21,7 +21,7 @@ public class MemberController {
 	private PasswordEncoder passwordEncoder;
 	
 	@GetMapping("/createMember")
-	public String createMemberVies() {
+	public String createMemberViews() {
 		return "system/signUp";
 	}
 	

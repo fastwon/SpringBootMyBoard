@@ -39,7 +39,8 @@ public class CommentController {
 
 		commentService.deleteComment(comment);
 		
-		return "forward:/board/getBoard?seq=" + bSeq;
+		return "redirect:/board/getBoard?seq=" + bSeq;
+//		return "forward:/board/getBoardList";
 	}
 
 }
