@@ -6,5 +6,7 @@ public interface MemberService {
 
 	void createMember(Member member);
 	
+	String checkId(Member member);
+	
 	void deleteMember(Member member);
 }

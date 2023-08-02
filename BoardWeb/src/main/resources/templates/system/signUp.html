@@ -5,16 +5,28 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script type="text/javascript" src="/js/FastValidChecker.js"></script>
 	<script type="text/javascript" src="/js/SignUpCheck.js"></script>
+	<script>
+        function checkDuplicate() {
+            var id = document.getElementById("userId").value;
+            if (id) {
+                var url = '/member/checkId?id=' + encodeURIComponent(id);
+                location.href = url;
+            } else {
+                alert("아이디를 입력해주세요.");
+            }
+        }
+    </script>
 </head>
 
 <body th:align="center">
 <h1>회원가입</h1>
 <form name="signUpForm" th:action="@{/member/createMember}" method="post" th:onsubmit="return checkValid()">
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+<table th:align="center" th:cellpadding="0" th:cellspacing="0">
 	
 	<tr>
 		<td bgcolor="orange">아이디</td>
-		<td><input type="text" name="id"/></td>
+		<td><input type="text" name="id" th:value="${rightId}" id="userId"/></td>
+		<td><button type="button" onclick="checkDuplicate()">중복확인</button></td>
 	</tr>
 	<tr>
 		<td bgcolor="orange">비밀번호</td>

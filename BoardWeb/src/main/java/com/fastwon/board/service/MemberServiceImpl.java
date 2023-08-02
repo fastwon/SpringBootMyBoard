@@ -15,13 +15,20 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void createMember(Member member) {
 //		member.setPassword("{noop}" +member.getPassword());
-		if(memberRepo.findById(member.getId()) != null) {
+		if(memberRepo.findById(member.getId()).isPresent()) {
 			return;
 		}
 		
-		
-		
 		memberRepo.save(member);
+	}
+	
+	@Override
+	public String checkId(Member member) {
+		if(memberRepo.findById(member.getId()).isPresent()) {
+			
+			return null;
+		}
+		return member.getId();
 	}
 	
 	@Override
