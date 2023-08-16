@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void deleteComment(Comment comment) {
 		commentRepo.deleteById(comment.getCmtId());
-		System.out.println("서비스 실행 된다.");
+//		System.out.println("서비스 실행 된다.");
 		
 	}
 	
@@ -50,7 +50,7 @@ public class CommentServiceImpl implements CommentService {
 		
 		QComment qcmt = QComment.comment;
 		
-		System.out.println("보드 시퀀스 뭐야???" + board.getSeq());
+//		System.out.println("보드 시퀀스 뭐야???" + board.getSeq());
 		
 		bb.and(qcmt.board.seq.eq(board.getSeq()));
 		

@@ -6,12 +6,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fastwon.board.domain.Board;
+import com.fastwon.board.domain.Comment;
 import com.fastwon.board.domain.PageNum;
 import com.fastwon.board.domain.QBoard;
 import com.fastwon.board.domain.Search;
 import com.fastwon.board.persistence.BoardRepository;
+import com.fastwon.board.persistence.CommentRepository;
 import com.querydsl.core.BooleanBuilder;
 
 @Service
@@ -19,6 +22,9 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
 	private BoardRepository boardRepo;
+	
+	@Autowired
+	private CommentRepository commentRepo;
 	
 	@Override
 	public void insertBoard(Board board) {
@@ -37,7 +43,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
+	@Transactional
 	public void deleteBoard(Board board) {
+		Board board1 = boardRepo.findById(board.getSeq()).get();
+		if(!board1.getCommentList().isEmpty()) {
+			commentRepo.deleteAll(board1.getCommentList());
+		}
 		boardRepo.deleteById(board.getSeq());
 	}
 	

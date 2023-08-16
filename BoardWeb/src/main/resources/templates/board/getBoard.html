@@ -61,7 +61,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<td th:text="${#dates.format(cmt.cmtCreateDate, 'yyyy-MM-dd')}" th:align="center"></td>
 	<td align="center"><input type="submit" th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" value="수정"></input></td>
 </form>
-	<td align="center"><a th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId}, board.seq=${cmt.board.getSeq()})}">삭제</a></td>
+	<!-- <th:block sec:authorize ="hasRole('ROLE_ADMIN')" th:with="isAdmin"> -->
+	<td align="center"><a th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId}, board.seq=${cmt.board.getSeq()})}">삭제</a></td>
 </tr>
 </table>
 

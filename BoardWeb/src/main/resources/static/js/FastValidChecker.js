@@ -12,7 +12,7 @@ function containAnother(input) {
 	let pass = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@_.";
 	
 	let iv = input.value;
-	for ( let i = 0; i <iv.lenght; i++) {
+	for ( let i = 0; i <iv.length; i++) {
 		if (pass.indexOf(iv[i]) == -1) {	// pass에 있는 내용 중에서
 											// 내가 쓴 내용이 없으면
 			return true;
