@@ -32,6 +32,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
+	public String checkName(Member member) {
+		if(memberRepo.findByName(member.getName()).isPresent()) {
+			
+			return null;
+		}
+		return member.getName();
+	}
+	
+	@Override
 	public void deleteMember(Member member) {
 		// TODO Auto-generated method stub
 		

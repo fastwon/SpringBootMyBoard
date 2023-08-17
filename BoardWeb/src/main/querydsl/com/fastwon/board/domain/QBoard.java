@@ -32,6 +32,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final QMember member;
 
+    public final StringPath photoUrl = createString("photoUrl");
+
     public final NumberPath<Long> seq = createNumber("seq", Long.class);
 
     public final StringPath title = createString("title");

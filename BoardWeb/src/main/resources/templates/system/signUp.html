@@ -5,37 +5,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script type="text/javascript" src="/js/FastValidChecker.js"></script>
 	<script type="text/javascript" src="/js/SignUpCheck.js"></script>
-	<script>
-        function checkDuplicate() {
-            var id = document.getElementById("userId").value;
-            if (id) {
-                var url = '/member/checkId?id=' + encodeURIComponent(id);
-                var xhr = new XMLHttpRequest();
-
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        if (xhr.status == 200) {
-                            var response = JSON.parse(xhr.responseText);
-			                if (response.isDuplicated) {
-			                    alert("중복된 아이디입니다.");
-			                } else {
-			                    alert("사용 가능한 아이디입니다.");
-	                            isDuplicatedChecked = true; // 중복확인 상태를 true로 설정
-			                }
-                        } else {
-                            alert("서버에 문제가 발생했습니다. 다시 시도해주세요.");
-                        }
-                    }
-                };
-
-                xhr.open("GET", url, true);
-                xhr.send(null);
-
-            } else {
-                alert("아이디를 입력해주세요.");
-            }
-        }
-    </script>
 </head>
 
 <body th:align="center">
@@ -45,7 +14,7 @@
 	
 	<tr>
 		<td bgcolor="orange">아이디</td>
-		<td><input type="text" name="id" id="userId"/></td>
+		<td><input type="text" name="id"/></td>
 		<td><button type="button" onclick="checkDuplicate()">중복확인</button></td>
 	</tr>
 	<tr>
@@ -59,7 +28,8 @@
 	
 	<tr>
 		<td bgcolor="orange">이름</td>
-		<td><input type="text" name="name" th:value="ㅇㅇ"/></td>
+		<td><input type="text" name="name"/></td>
+		<td><button type="button" onclick="checkNameDuplicate()">중복확인</button></td>
 	</tr>
 	<tr>
 		<td><input type="hidden" name="role" value="ROLE_MEMBER"></td>

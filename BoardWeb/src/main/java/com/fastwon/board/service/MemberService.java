@@ -8,5 +8,7 @@ public interface MemberService {
 	
 	String checkId(Member member);
 	
+	String checkName(Member member);
+	
 	void deleteMember(Member member);
 }

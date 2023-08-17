@@ -45,6 +45,20 @@ public class MemberController {
 	    }
 	}
 	
+	@GetMapping("/checkName")
+	public ResponseEntity<?> checkMemberName(Member member) {
+	    String mName = memberService.checkName(member);
+	    Map<String, Object> response = new HashMap<>();
+
+	    if(mName != null) {
+	        response.put("nameDuplicated", false);
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    } else {
+	        response.put("nameDuplicated", true);
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    }
+	}
+	
 	@PostMapping("/createMember")
 	public String createMember(Member member) {
 		member.setPassword(passwordEncoder.encode(member.getPassword()));

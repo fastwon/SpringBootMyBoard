@@ -32,6 +32,8 @@ public class Board {
 	
 	private String content;
 	
+	private String photoUrl;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(updatable = false)
 	private Date createDate = new Date();

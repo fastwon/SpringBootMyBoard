@@ -8,17 +8,21 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <body th:align="center">
 <h1>게시글 등록</h1>
-<form th:action="@{/board/insertBoard}" method="post">
+<form th:action="@{/board/insertBoard}" method="post" enctype="multipart/form-data">
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 	
 	<tr>
 		<td bgcolor="orange" th:text="제목" width="80"></td>
-		<td><input name="title" type="text" size="50"></td>
+		<td><input name="title" type="text" size="50" value="제목"></td>
 	</tr>
 	<tr>
 		<td bgcolor="orange" th:text="작성자"></td>
 		<td><span sec:authentication="principal.member.name"></span></td>
 	</tr>
+	<tr> <!-- 새로운 행을 추가해 파일을 선택할 수 있는 입력 요소를 만듭니다. -->
+        <td bgcolor="orange" th:text="사진첨부"></td>
+        <td><input type="file" name="photo"></td>
+    </tr>
 	<tr>
 		<td bgcolor="orange" th:text="내용">
 		<td><textarea name="content" cols="50" rows="10"></textarea></td>
