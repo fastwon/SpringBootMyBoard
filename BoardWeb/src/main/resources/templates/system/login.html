@@ -18,12 +18,17 @@
 		<td bgcolor="orange">비밀번호</td>
 		<td><input type="password" name="password"/></td>
 	</tr>
+	
+	
 	<tr>
 		<td colspan="2" align="center">
 			<input type="submit" value="로그인"/>
 		</td>
 	</tr>
 </table>
+	<div th:if="error">
+   		<p id="valid" style="color: red; font-size:12px;"><a th:text="${exception}"></a></p>
+	</div>
 </form>
 </body>
 </html>

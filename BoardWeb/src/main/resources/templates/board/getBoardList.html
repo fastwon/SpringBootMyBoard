@@ -48,7 +48,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<td th:text="${board.seq}" th:align="center">
 	<td><a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a></td>
 	<td th:text="${board.member.name}" th:align="center">
-	<td th:text="${#dates.format(board.createDate, 'yyyy-MM-dd')}" th:align="center">
+	<td th:text="${#dates.format(board.createDate, 'yyyy-MM-dd HH:mm')}" th:align="center">
 	<td th:text="${board.cnt}" th:align="center">
 </tr>
 

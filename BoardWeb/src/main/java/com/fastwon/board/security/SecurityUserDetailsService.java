@@ -3,6 +3,7 @@ package com.fastwon.board.security;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +25,10 @@ public class SecurityUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException(username + "사용자 없음");
 		} else {
 			Member member = optional.get();
+			
+			if(!member.isEnabled()) {
+				throw new DisabledException("정지되었습니다.");
+			}
 			return new SecurityUser(member);
 		}
 	}
