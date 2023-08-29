@@ -18,5 +18,7 @@ public interface BoardService {
 	
 	Page<Board> getBoardList(Search search, PageNum pn);
 	
+	Board getUdateBoard(Board board);
+	
 	
 }

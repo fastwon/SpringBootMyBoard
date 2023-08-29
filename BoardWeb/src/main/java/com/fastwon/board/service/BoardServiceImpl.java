@@ -32,11 +32,19 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
+	public Board getUdateBoard(Board board) {
+		Board findBoard = boardRepo.findById(board.getSeq()).get();
+		
+		return findBoard;
+	}
+	
+	@Override
 	public void updateBoard(Board board) {
 		Board findBoard = boardRepo.findById(board.getSeq()).get();
 		
 		findBoard.setTitle(board.getTitle());
 		findBoard.setContent(board.getContent());
+		findBoard.setPhotoUrl(board.getPhotoUrl());
 		
 		boardRepo.save(findBoard);
 		
@@ -57,6 +65,7 @@ public class BoardServiceImpl implements BoardService {
 		Board findBoard = boardRepo.findById(board.getSeq()).get();
 		findBoard.setCnt(findBoard.getCnt() + 1);
 		
+		// 조회수 추가를 위해 db에 저장
 		boardRepo.save(findBoard);
 		
 		return findBoard;

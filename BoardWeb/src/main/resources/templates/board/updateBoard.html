@@ -21,12 +21,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <body th:align="center">
 <h1>게시글 등록</h1>
-<form name="isbForm" th:action="@{/board/insertBoard}" method="post" enctype="multipart/form-data" onsubmit="return checkValid()">
+<form name="isbForm" th:action="@{/board/updateBoard}" method="post" enctype="multipart/form-data" onsubmit="return checkValid()">
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 	
 	<tr>
 		<td bgcolor="#CCCCFF" th:text="제목" width="80"></td>
-		<td><input name="title" type="text" size="50" value="제목"></td>
+		<td><input name="seq" type="hidden" th:value="${board.seq}">
+		<input name="title" type="text" size="50" th:value="${board.title}"></td>
 	</tr>
 	<tr>
 		<td bgcolor= "#CCCCFF" th:text="작성자"></td>
@@ -38,15 +39,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     </tr>
     <tr> 
         <td bgcolor ="#CCCCFF">미리보기</td>
-        <td><img id='imagePreview' src='#' alt='your image' /></td> 
+        <td><img id='imagePreview' th:src="@{${board.photoUrl}}" alt='your image' /></td> 
     </tr>
 	<tr>
 		<td bgcolor="#CCCCFF" th:text="내용">
-		<td><textarea name="content" cols="50" rows="10"></textarea></td>
+		<td><textarea name="content" cols="50" rows="10" th:text="${board.content}"></textarea></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="center">
-			<input type="submit" value="게시글 등록">
+			<input type="submit" value="게시글 수정">
 		</td>
 	</tr>
 </table>
