@@ -26,6 +26,7 @@ import com.fastwon.board.persistence.BoardRepository;
 import com.fastwon.board.security.SecurityUser;
 import com.fastwon.board.service.BoardService;
 import com.fastwon.board.service.CommentService;
+import com.google.firebase.auth.FirebaseAuthException;
 
 @Controller
 @RequestMapping("/board/")
@@ -45,6 +46,7 @@ public class BoardController {
 		
 		Page<Board> boardList = boardService.getBoardList(search, pn);
 		model.addAttribute("boardList", boardList);
+		model.addAttribute("gsc", search.getSearchCondition());
 		model.addAttribute("gsk", search.getSearchKeyword());
 		return "board/getBoardList";
 	}
@@ -66,29 +68,31 @@ public class BoardController {
 	
 	@PostMapping("/insertBoard")
 	public String insertBoard(Board board, @RequestParam("photo") MultipartFile photo, @AuthenticationPrincipal SecurityUser principal) {
-		board.setMember(principal.getMember());
-		
-		// 사진 파일 처리 로직
-        if (!photo.isEmpty()) { // 파일이 비어있지 않다면 처리
-            // 원하는 경로에 파일을 저장
-            String fileName = StringUtils.cleanPath(Objects.requireNonNull(photo.getOriginalFilename()));
-            // 경로 확인 및 생성
-            Path path = Paths.get("src/main/resources/static/uploads/" + fileName);
-            try {
-                Files.createDirectories(path.getParent()); // 부모 디렉토리 생성
-                Files.write(path, photo.getBytes());
-            } catch (IOException e) {
-                // 파일 저장 중 오류 처리
-                e.printStackTrace();
-            }
-
-            //board 객체에 이미지 URL을 저장하는 필드를 추가
-            board.setPhotoUrl("/uploads/" + fileName);
-        }
-        
-		boardService.insertBoard(board);
-		return "redirect:getBoardList";
+	    board.setMember(principal.getMember());
+	    
+	    // 사진 파일 처리 로직
+	    if (!photo.isEmpty()) { // 파일이 비어있지 않다면 처리
+	        // 원하는 경로에 파일을 저장
+	        String fileName = StringUtils.cleanPath(Objects.requireNonNull(photo.getOriginalFilename())) + System.currentTimeMillis();
+	        
+	        try {
+	            // Firebase Storage에 이미지 업로드하고 URL 받아오기
+	            String imageUrl = "https://firebasestorage.googleapis.com/v0/b/fastwonboard.appspot.com/o/" + fileName + "?alt=media";
+        		boardService.uploadFiles(photo, fileName);
+	            
+	            // board 객체에 이미지 URL을 저장하는 필드를 추가
+	            board.setPhotoUrl(imageUrl);
+	            
+	        } catch (IOException | FirebaseAuthException e) {
+	            // 파일 저장 중 오류 처리
+	            e.printStackTrace();
+	        }
+	    }
+	    
+	    boardService.insertBoard(board);
+	    return "redirect:getBoardList";
 	}
+
 	
 	@GetMapping("/updateBoard")
 	public String updateBoardView(Board board, Model model) {

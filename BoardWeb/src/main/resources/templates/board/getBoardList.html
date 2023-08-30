@@ -19,11 +19,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <hr>
 <!-- 검색 시작 -->
-<form th:action="@{/board/getBoardList}" method="post">
+<form th:action="@{/board/getBoardList}" method="get">
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
 	<tr>
 		<td align="right">
-			<select name="searchCondition">
+			<select name="searchCondition" th:value="${gsc}">
 				<option value="TITLE">제목</option>
 				<option value="CONTENT">내용</option>
 			</select>
@@ -56,7 +56,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <hr>
 
-<form th:action="@{/board/getBoardList}" method="post">
+<form th:action="@{/board/getBoardList}" method="get">
+		<input type="hidden" name="searchCondition" th:value="${gsc}">
 		<input type="hidden" name="searchKeyword" th:value="${gsk}">
 	<th:block th:each="numb : ${#numbers.sequence(1, boardList.getTotalPages())}">
 		<input type="submit" name="num" th:value="${numb}">		

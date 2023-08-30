@@ -1,12 +1,18 @@
 package com.fastwon.board.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fastwon.board.domain.Board;
 import com.fastwon.board.domain.Comment;
@@ -15,6 +21,10 @@ import com.fastwon.board.domain.QBoard;
 import com.fastwon.board.domain.Search;
 import com.fastwon.board.persistence.BoardRepository;
 import com.fastwon.board.persistence.CommentRepository;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.cloud.StorageClient;
 import com.querydsl.core.BooleanBuilder;
 
 @Service
@@ -85,6 +95,20 @@ public class BoardServiceImpl implements BoardService {
 		
 		Pageable pageable = PageRequest.of(pn.getNum()-1, 10, Sort.Direction.DESC, "createDate");
 		return boardRepo.findAll(builder, pageable);
+	}
+	
+	@Value("${app.firebase-bucket}")
+	private String firebaseBucket;
+	
+	@Override
+	public String uploadFiles(MultipartFile file, String nameFile) throws IOException, FirebaseAuthException {
+		Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+		
+		InputStream content = new ByteArrayInputStream(file.getBytes());
+		
+		Blob blob = bucket.create(nameFile.toString(), content, file.getContentType());
+		
+		return blob.getMediaLink();
 	}
 
 }
