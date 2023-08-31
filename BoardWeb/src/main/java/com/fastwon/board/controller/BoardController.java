@@ -48,6 +48,14 @@ public class BoardController {
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("gsc", search.getSearchCondition());
 		model.addAttribute("gsk", search.getSearchKeyword());
+		
+		// totalPages와 currentPage를 추가
+	    int totalPages = boardList.getTotalPages();
+	    int currentPage = boardList.getNumber() + 1; // getPageNumber는 0부터 시작하기 때문에 +1
+
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("currentPage", currentPage);
+		
 		return "board/getBoardList";
 	}
 	

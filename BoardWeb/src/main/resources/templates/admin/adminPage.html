@@ -1,12 +1,54 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-	<title>게시판 관리</title>
+	<title>회원 관리</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<style>
+		body {
+			margin-left: 100;
+			
+		}
+	</style>
 </head>
 
 <body>
 	<h1>관리자님 환영합니다.^^</h1>
+	<div sec:authorize="isAuthenticated()">
+		관리자 
+		<b><font color="red">
+			<span sec:authentication="principal.member.name"></span>
+		</font></b> 님 
+	</div>
+	
+	<br>
+	
 	<h4>게시 글 목록으로 <a th:href="@{/board/getBoardList}">이동</a></h4>
+	
+	<br>
+	
+	<h2>회원 관리</h2>
+	
+<table border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+	<tr>
+		<th bgcolor="orange" >ID</th>
+		<th bgcolor="orange" >NAME</th>
+		<th bgcolor="orange" >ROLE</th>
+		<th bgcolor="orange" colspan="2">활성화</th>
+	</tr>
+	
+	<tr th:each="member : ${memberList}">
+		<td th:text="${member.id}" th:align="center"></td>
+		<td th:text="${member.name}" th:align="center"></td>
+		<td th:text="${member.role}" th:align="center"></td>
+		<td th:align="center" th:if="${member.enabled} == true and ${member.role.name} == 'ROLE_MEMBER'" bgcolor="#00FF00"> <a th:text="${member.enabled}" th:href="@{/admin/enabledChange(id=${member.id})}"></a></td>
+		<td th:align="center" th:if="${member.enabled} == false" bgcolor="#FF0000"> <a th:text="${member.enabled}" th:href="@{/admin/enabledChange(id=${member.id})}"></a></td>
+	</tr>
+
+</table>
+
+	
+		
+
 </body>
 </html>

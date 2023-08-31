@@ -35,13 +35,13 @@ public class BoardRepositoryTest {
 //		member1.setEnabled(true);
 //		memberRepo.save(member1);
 
-		Member member2 = new Member();
-		member2.setId("admin");
-		member2.setPassword(encoder.encode("admin123"));
-		member2.setName("도우너");
-		member2.setRole(Role.ROLE_ADMIN);
-		member2.setEnabled(true);
-		memberRepo.save(member2);
+//		Member member2 = new Member();
+//		member2.setId("admin");
+//		member2.setPassword(encoder.encode("admin123"));
+//		member2.setName("도우너");
+//		member2.setRole(Role.ROLE_ADMIN);
+//		member2.setEnabled(true);
+//		memberRepo.save(member2);
 		
 //		for (int i=1; i<= 13; i++) {
 //			Board board = new Board();
@@ -50,8 +50,12 @@ public class BoardRepositoryTest {
 //			board.setContent(member1.getName() + "가 등록한 게시글 내용 " + i);
 //			boardRepo.save(board);
 //		}
+		
+		Member member2 = memberRepo.findById("member").get();
+		
+		System.out.println(member2.getName());
 
-		for (int i=1; i<= 3; i++) {
+		for (int i=26; i<= 100; i++) {
 			Board board = new Board();
 			board.setMember(member2);
 			board.setTitle(member2.getName() + "가 등록한 게시글 " + i);

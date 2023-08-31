@@ -14,7 +14,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<span sec:authentication="principal.member.name"></span>
 	</font></b> 님 환영합니다.........................
 	<a th:href="@{/system/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
-	<a th:href="@{/admin/adminPage}">게시판관리</a>
+	<a th:href="@{/admin/adminPage}">회원관리</a>
 </span>
 
 <hr>
@@ -44,7 +44,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<th bgcolor="orange" width="50">조회수</th>
 </tr>
 
-<tr th:each="board, state : ${boardList}">
+<tr th:each="board : ${boardList}">
 	<td th:text="${board.seq}" th:align="center">
 	<td><a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a></td>
 	<td th:text="${board.member.name}" th:align="center">
@@ -57,12 +57,19 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <hr>
 
 <form th:action="@{/board/getBoardList}" method="get">
-		<input type="hidden" name="searchCondition" th:value="${gsc}">
-		<input type="hidden" name="searchKeyword" th:value="${gsk}">
-	<th:block th:each="numb : ${#numbers.sequence(1, boardList.getTotalPages())}">
-		<input type="submit" name="num" th:value="${numb}">		
-	</th:block>
+	<input type="hidden" name="searchCondition" th:value="${gsc}">
+	<input type="hidden" name="searchKeyword" th:value="${gsk}">
+	<table th:align="center">
+		<tr>
+			<td><a th:href="@{/board/getBoardList(num=${currentPage > 5 ? (currentPage-1)/5*5+1-5 : 1})}">이전</a>&nbsp;</td>
+			<td th:each="numb : ${#numbers.sequence((currentPage-1)/5*5+1, (currentPage-1)/5*5+1+4)}" th:if="${numb <= totalPages}">
+				<input type="submit" name="num" th:value="${numb}">		
+			</td>
+			<td>&nbsp;<a th:href="@{/board/getBoardList(num=${(currentPage-1)/5 < (totalPages-1)/5 ? (currentPage-1)/5*5+1+5 : totalPages})}">다음</a></td>
+        </tr>
+    </table>
 </form>
+
 
 <!-- <th:block th:text="${gsk}"/> -->
 

@@ -1,5 +1,7 @@
 var idDuplicatedChecked = false; // 중복확인 버튼이 눌렸는지 확인하는 상태 변수
 var nameDuplicatedChecked = false;
+var checkedId = "";
+var checkedName = "";
 
 function checkValid(){
 	let idInput = document.signUpForm.id;
@@ -16,18 +18,28 @@ function checkValid(){
 		alert("아이디는 \n영어 숫자 ! @ _ . \n로만 작성 가능합니다.");
 		return false;
 	}
+	
+	if(atLeastLetter(idInput, 5)) {
+		alert("아이디는 5글자 이상이어야 합니다.")
+		return false;
+	}
 
-    if (!idDuplicatedChecked) {
+    if (!idDuplicatedChecked || (idInput.value != checkedId)) {
         alert("아이디 중복확인을 해주세요.");
         return false;
     }
+	
+	if(atLeastLetter(pInput, 8)) {
+		alert("비밀번호는 8글자 이상이어야 합니다.")
+		return false;
+	}
 	
 	if(notEqualPw(pInput, pInput2)) {
 		alert("비밀번호가 다릅니다.");
 		return false;
 	}
 	
-	if (!nameDuplicatedChecked) {
+	if (!nameDuplicatedChecked || (nInput.value != checkedName)) {
         alert("이름 중복확인을 해주세요.");
         return false;
     }
@@ -37,6 +49,7 @@ function checkValid(){
 
 function checkDuplicate() {
     var id = document.signUpForm.id.value;
+    
     if (id) {
         var url = '/member/checkId?id=' + encodeURIComponent(id);
         var xhr = new XMLHttpRequest();
@@ -49,6 +62,7 @@ function checkDuplicate() {
 	                    alert("중복된 아이디입니다.");
 	                } else {
 	                    alert("사용 가능한 아이디입니다.");
+	                    checkedId = id;
                         idDuplicatedChecked = true; // 중복확인 상태를 true로 설정
 	                }
                 } else {
@@ -79,6 +93,7 @@ function checkNameDuplicate() {
 	                    alert("중복된 이름입니다.");
 	                } else {
 	                    alert("사용 가능한 이름입니다.");
+	                    checkedName = name;
                         nameDuplicatedChecked = true; // 중복확인 상태를 true로 설정
 	                }
                 } else {
