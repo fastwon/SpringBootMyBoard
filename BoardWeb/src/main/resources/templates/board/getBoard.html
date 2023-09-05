@@ -4,29 +4,59 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 	<title>게시글 상세</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<style type="text/css">
+		td {
+		  word-break:break-all;
+		}
+		
+		img {
+			max-width: 500;
+		}
+	</style>
 </head>
 
 <body th:align="center">
+
+<nav>
+<hr>
+
+<span sec:authorize="isAuthenticated()">
+	<b><font color="red">
+	<span sec:authentication="principal.member.name"></span>
+	</font></b> 님 환영합니다.........................
+</span>
+	<a sec:authorize="isAnonymous()" href="system/login">로그인</a><th:block sec:authorize="isAnonymous()" th:text="'/'"/><a sec:authorize="isAnonymous()" href="member/createMember">회원가입</a>
+	<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
+	<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminPage}">회원관리</a>&nbsp;&nbsp;&nbsp;
+<a th:href="@{/}">HOME</a>
+
+<hr>
+</nav>
+
 <h1>게시글 상세</h1>
 <form th:action="@{/board/updateBoard}" method="get">
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+	
+	<input name="seq" type="hidden" th:value="${board.seq}">
 
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width=500>
 	<tr>
 		<td bgcolor="orange" th:text="제목" width="80"></td>
-		<td><input name="seq" type="hidden" th:value="${board.seq}">
-		<input name="title" type="text" th:value="${board.title}"></td>
+		<td th:text="${board.title}"></td>
+		
 	</tr>
 	<tr>
 		<td bgcolor="orange" th:text="작성자"></td>
 		<td th:text="${board.member.name}"></td>
 	</tr>
+</table>
+		
+		<img th:src="@{${board.photoUrl}}">
+	
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width=500>
 	<tr>
-		<td colspan="2"><img th:src="@{${board.photoUrl}}"></td>
-	</tr>
-	<tr>
-		<td bgcolor="orange" th:text="내용">
-		<td>
-			<textarea name="content" th:text="${board.content}" cols="40" rows="10"></textarea>
+		<td bgcolor="orange" th:text="내용" width="80">
+		<td th:text="${board.content}" height=200>
+			<!-- <textarea th:text="${board.content}" cols="40" rows="10"></textarea> -->
 		</td>
 	</tr>
 	<tr>
@@ -45,12 +75,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 </table>
 </form>
 <a th:href="@{/board/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/board/deleteBoard(seq=${board.seq})}">글삭제</a>&nbsp;&nbsp;&nbsp;
+<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/board/deleteBoard(seq=${board.seq})}" onclick="return confirm('글을 삭제하겠습니까?')">글삭제</a>&nbsp;&nbsp;&nbsp;
 <a th:href="@{/board/getBoardList}">글목록</a>
 
 <hr>
 
 <h2>댓글</h2>
+<form th:action="@{/comment/updateComment}" method="post">
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 <tr>
 	<th bgcolor="orange" width="50">작성자</th>
@@ -59,17 +90,16 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<th bgcolor="orange" width="100" colspan="2"></th>
 </tr>
 <tr th:each="cmt : ${commentList}">
-<form th:action="@{/comment/updateComment}" method="post">
 	<input name="cmtId" type="hidden" th:value="${cmt.cmtId}">
 	<td th:text="${cmt.cmtWriter}" th:align="center"></td>
 	<td th:align="center"><textarea name="cmtContent" th:text="${cmt.cmtContent}" cols="54" rows="2"></textarea></td>
 	<td th:text="${#dates.format(cmt.cmtCreateDate, 'yyyy-MM-dd')}" th:align="center"></td>
 	<td align="center"><input type="submit" th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" value="수정"></input></td>
-</form>
 	<!-- <th:block sec:authorize ="hasRole('ROLE_ADMIN')" th:with="isAdmin"> -->
-	<td align="center"><a th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId}, board.seq=${cmt.board.getSeq()})}">삭제</a></td>
+	<td align="center"><a th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId}, board.seq=${cmt.board.getSeq()})}" onclick="return confirm('댓글을 삭제하겠습니까?')">삭제</a></td>
 </tr>
 </table>
+</form>
 
 <form th:action="@{/board/getBoard}" method="get">
 	<input name="board" type="hidden" th:value="${board.seq}">

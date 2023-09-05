@@ -2,18 +2,32 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-	<title>메인 페이지</title>
+	<title>Fastwon Board</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
-<body>
+<body th:align="center">
+
+<nav>
+<hr>
+
+<span sec:authorize="isAuthenticated()">
+	<b><font color="red">
+	<span sec:authentication="principal.member.name"></span>
+	</font></b> 님 환영합니다.........................
+</span>
+	<a sec:authorize="isAnonymous()" href="system/login">로그인</a><th:block sec:authorize="isAnonymous()" th:text="'/'"/><a sec:authorize="isAnonymous()" href="member/createMember">회원가입</a>
+	<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
+	<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminPage}">회원관리</a>&nbsp;&nbsp;&nbsp;
+<a th:href="@{/}">HOME</a>
+
+<hr>
+</nav>
+
 	<br>
-	<h3 align="center">xxxxFastwon Board~~~~</h3>
+	<h1 align="center">xxxxFastwon Board~~~~</h1>
 	<table></table>
 	<hr>
 	<p align="center"><a href="board/getBoardList">글 목록 바로가기</a></p>
-	<p sec:authorize="isAnonymous()" align="center"><a href="system/login">로그인</a>/<a href="member/createMember">회원가입</a></p>
-	<p align="center"><a sec:authorize="isAuthenticated()" href="system/logout">로그아웃</a></p>
-	
 	<br>
 	<hr>
 	
