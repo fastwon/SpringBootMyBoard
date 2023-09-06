@@ -12,7 +12,7 @@ public interface MemberService {
 	
 	String checkName(Member member);
 	
-	void deleteMember(Member member);
+	void deleteMember(String id);
 	
 	Page<Member> getMemberList();
 }

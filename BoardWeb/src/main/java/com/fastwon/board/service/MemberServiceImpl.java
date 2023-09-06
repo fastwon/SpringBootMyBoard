@@ -1,5 +1,7 @@
 package com.fastwon.board.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -7,18 +9,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.fastwon.board.domain.Board;
 import com.fastwon.board.domain.Member;
-import com.fastwon.board.domain.PageNum;
-import com.fastwon.board.domain.QBoard;
-import com.fastwon.board.domain.QMember;
+import com.fastwon.board.persistence.BoardRepository;
+import com.fastwon.board.persistence.CommentRepository;
 import com.fastwon.board.persistence.MemberRepository;
-import com.querydsl.core.BooleanBuilder;
 
 @Service
 public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	private MemberRepository memberRepo;
+	
+	@Autowired
+	private BoardRepository boardRepo;
+	
+	@Autowired
+	private CommentRepository commentRepo;
+	
 	
 	@Override
 	public void createMember(Member member) {
@@ -49,8 +57,21 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public void deleteMember(Member member) {
-		// TODO Auto-generated method stub
+	public void deleteMember(String id) {
+		Member member = memberRepo.findById(id).get();
+		
+		if(!member.getBoardList().isEmpty()) {
+			List<Board> boardList = member.getBoardList();
+			
+			for(Board b : boardList) {
+				if(!b.getCommentList().isEmpty()) {
+					commentRepo.deleteAll(b.getCommentList());
+				}
+			}
+			boardRepo.deleteAll(boardList);
+		}
+		
+		memberRepo.deleteById(id);
 		
 	}
 	

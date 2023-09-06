@@ -101,14 +101,12 @@ public class BoardServiceImpl implements BoardService {
 	private String firebaseBucket;
 	
 	@Override
-	public String uploadFiles(MultipartFile file, String nameFile) throws IOException, FirebaseAuthException {
+	public void uploadFiles(MultipartFile file, String nameFile) throws IOException, FirebaseAuthException {
 		Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
 		
 		InputStream content = new ByteArrayInputStream(file.getBytes());
 		
-		Blob blob = bucket.create(nameFile.toString(), content, file.getContentType());
-		
-		return blob.getMediaLink();
+		bucket.create(nameFile.toString(), content, file.getContentType());
 	}
 
 }

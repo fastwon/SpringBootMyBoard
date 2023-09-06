@@ -24,7 +24,7 @@ public interface BoardService {
 	
 	Board getUdateBoard(Board board);
 	
-	String uploadFiles(MultipartFile file, String nameFile) throws IOException, FirebaseAuthException;
+	void uploadFiles(MultipartFile file, String nameFile) throws IOException, FirebaseAuthException;
 	
 	
 }
