@@ -43,7 +43,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	
 	<tr>
 		<td bgcolor="#CCCCFF" th:text="제목" width="80"></td>
-		<td><input name="title" type="text" size="50" placeholder="두 글자 이상"></td>
+		<td><input name="title" type="text" size="50" placeholder="두 글자 이상" maxlength="50"></td>
 	</tr>
 	<tr>
 		<td bgcolor= "#CCCCFF" th:text="작성자"></td>
@@ -59,7 +59,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     </tr>
 	<tr>
 		<td bgcolor="#CCCCFF" th:text="내용">
-		<td><textarea name="content" cols="50" rows="10"></textarea></td>
+		<td><textarea name="content" cols="50" rows="10" maxlength="255"></textarea></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="center">

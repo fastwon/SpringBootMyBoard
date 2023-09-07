@@ -4,6 +4,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 	<title>게시글 상세</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script type="text/javascript" src="/js/FastValidChecker.js"></script>
+	<script type="text/javascript" src="/js/commentCheck.js"></script>
 	<style type="text/css">
 		td {
 		  word-break:break-all;
@@ -110,7 +112,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <hr>
 
-<form th:action="@{/comment/insertComment}" method="post">
+<form name="cmtForm" th:action="@{/comment/insertComment}" method="post" onsubmit="return checkValid()">
 	<input name="board" type="hidden" th:value="${board.seq}">
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 	<tr>
@@ -122,7 +124,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</tr>
 	<tr>
 		<td><span sec:authentication="principal.member.name"></span></td>
-		<td><textarea name="cmtContent" cols="54" rows="2"></textarea></td>
+		<td><textarea name="cmtContent" cols="54" rows="2" maxlength="100"></textarea></td>
 	</tr>
 </table>
 </form>
