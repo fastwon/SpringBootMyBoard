@@ -2,8 +2,9 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-	<title>게시글 목록</title>
+	<title>Fastwon Board</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
 </head>
 
 <body th:align="center">
@@ -20,7 +21,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
 	<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminPage}">회원관리</a>&nbsp;&nbsp;&nbsp;
 	<a th:href="@{/}">HOME</a>&nbsp;&nbsp;&nbsp;
-	<a sec:authorize="isAuthenticated()" th:href="@{'/member/' + ${#authentication.principal.member.id} + '/deleteMember'}" onclick="return confirm('정말 탈퇴하겠습니까?')">회원탈퇴</a>&nbsp;&nbsp;&nbsp;
 <hr>
 </nav>
 
@@ -29,7 +29,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <hr>
 <!-- 검색 시작 -->
 <form th:action="@{/board/getBoardList}" method="get">
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width="700">
 	<tr>
 		<td align="right">
 			<select name="searchCondition" th:value="${gsc}">
@@ -44,18 +44,18 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 </form>
 <!-- 검색 종료 -->
 
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width="800">
 <tr>
-	<th bgcolor="orange" width="50">번호</th>
-	<th bgcolor="orange" width="400">제목</th>
-	<th bgcolor="orange" width="100">작성자</th>
-	<th bgcolor="orange" width="100">등록일</th>
-	<th bgcolor="orange" width="50">조회수</th>
+	<th class="tagBox" width="50">번호</th>
+	<th class="tagBox" width="400">제목</th>
+	<th class="tagBox"  width="100">작성자</th>
+	<th class="tagBox"  width="100">등록일</th>
+	<th class="tagBox"  width="50">조회수</th>
 </tr>
 
 <tr th:each="board : ${boardList}">
 	<td th:text="${board.seq}" th:align="center">
-	<td><a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a></td>
+	<td><a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a><img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18"></td>
 	<td th:text="${board.member.name}" th:align="center">
 	<td th:text="${#dates.format(board.createDate, 'yyyy-MM-dd HH:mm')}" th:align="center">
 	<td th:text="${board.cnt}" th:align="center">
@@ -70,11 +70,19 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<input type="hidden" name="searchKeyword" th:value="${gsk}">
 	<table th:align="center">
 		<tr>
-			<td><a th:href="@{/board/getBoardList(num=${currentPage > 5 ? (currentPage-1)/5*5+1-5 : 1})}">이전</a>&nbsp;</td>
+			<td>
+		        <button type="submit" name="num" th:value="${currentPage > 5 ? (currentPage-1)/5*5+1-5 : 1}">
+		            이전
+		        </button>&nbsp;
+   			</td>
 			<td th:each="numb : ${#numbers.sequence((currentPage-1)/5*5+1, (currentPage-1)/5*5+1+4)}" th:if="${numb <= totalPages}">
 				<input type="submit" name="num" th:value="${numb}">		
 			</td>
-			<td>&nbsp;<a th:href="@{/board/getBoardList(num=${(currentPage-1)/5 < (totalPages-1)/5 ? (currentPage-1)/5*5+1+5 : totalPages})}">다음</a></td>
+			<td>&nbsp;
+		        <button type="submit" name="num" th:value="${(currentPage-1)/5 < (totalPages-1)/5 ? (currentPage-1)/5*5+1+5 : totalPages}">
+		            다음
+		        </button>
+   			</td>
         </tr>
     </table>
 </form>
@@ -85,5 +93,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <br>
 <a th:href="@{/board/insertBoard}">게시글 등록</a>
+<hr>
+<a sec:authorize="isAuthenticated()" th:href="@{'/member/' + ${#authentication.principal.member.id} + '/deleteMember'}" onclick="return confirm('정말 탈퇴하겠습니까?')">회원탈퇴</a>
 </body>
 </html>

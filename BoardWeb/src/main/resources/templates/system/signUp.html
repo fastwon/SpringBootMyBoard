@@ -1,10 +1,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Sign Up</title>
+	<title>Fastwon System</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script type="text/javascript" src="/js/FastValidChecker.js"></script>
 	<script type="text/javascript" src="/js/SignUpCheck.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
 </head>
 
 <body th:align="center">
@@ -13,21 +14,21 @@
 <table th:align="center" th:cellpadding="0" th:cellspacing="0">
 	
 	<tr>
-		<td bgcolor="orange">아이디</td>
+		<td class="tagBox">아이디</td>
 		<td><input type="text" name="id" placeholder="5자 이상 입력하세요" maxlength="10"/></td>
 		<td><button type="button" onclick="checkDuplicate()">중복확인</button></td>
 	</tr>
 	<tr>
-		<td bgcolor="orange">비밀번호</td>
+		<td class="tagBox" >비밀번호</td>
 		<td><input type="password" name="password" placeholder="8자 이상 입력하세요" maxlength="16"/></td>
 	</tr>
 	<tr>
-		<td bgcolor="orange">비밀번호 확인</td>
+		<td class="tagBox">비밀번호 확인</td>
 		<td><input type="password" name="passwordChk"/></td>
 	</tr>
 	
 	<tr>
-		<td bgcolor="orange">이름</td>
+		<td class="tagBox" >이름</td>
 		<td><input type="text" name="name" maxlength="10"/></td>
 		<td><button type="button" onclick="checkNameDuplicate()">중복확인</button></td>
 	</tr>

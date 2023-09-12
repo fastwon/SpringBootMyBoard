@@ -2,7 +2,7 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-	<title>게시글 상세</title>
+	<title>Fastwon Board</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script type="text/javascript" src="/js/FastValidChecker.js"></script>
 	<script type="text/javascript" src="/js/commentCheck.js"></script>
@@ -15,6 +15,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 			max-width: 500;
 		}
 	</style>
+	<link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
 </head>
 
 <body th:align="center">
@@ -40,33 +41,33 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	
 	<input name="seq" type="hidden" th:value="${board.seq}">
 
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width=500>
+<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width=500>
 	<tr>
-		<td bgcolor="orange" th:text="제목" width="80"></td>
+		<td class="tagBox"th:text="제목" width="80"></td>
 		<td th:text="${board.title}"></td>
 		
 	</tr>
 	<tr>
-		<td bgcolor="orange" th:text="작성자"></td>
+		<td class="tagBox"th:text="작성자"></td>
 		<td th:text="${board.member.name}"></td>
 	</tr>
 </table>
 		
 		<img th:src="@{${board.photoUrl}}">
 	
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width=500>
+<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width=500>
 	<tr>
-		<td bgcolor="orange" th:text="내용" width="80">
+		<td class="tagBox"th:text="내용" width="80">
 		<td th:text="${board.content}" height=200>
 			<!-- <textarea th:text="${board.content}" cols="40" rows="10"></textarea> -->
 		</td>
 	</tr>
 	<tr>
-		<td bgcolor="orange" th:text="등록일"></td>
+		<td class="tagBox"th:text="등록일"></td>
 		<td th:text="${#dates.format(board.createDate, 'yyyy-MM-dd')}">
 	</tr>
 	<tr>
-		<td bgcolor="orange" th:text="조회수"></td>
+		<td class="tagBox"th:text="조회수"></td>
 		<td th:text="${board.cnt}"></td>
 	</tr>
 	<tr>
@@ -77,19 +78,19 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 </table>
 </form>
 <a th:href="@{/board/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/board/deleteBoard(seq=${board.seq})}" onclick="return confirm('글을 삭제하겠습니까?')">글삭제</a>&nbsp;&nbsp;&nbsp;
+<a th:if="${#authentication.principal.member.name == board.member.name} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{/board/deleteBoard(seq=${board.seq})}" onclick="return confirm('글을 삭제하겠습니까?')">글삭제</a>&nbsp;&nbsp;&nbsp;
 <a th:href="@{/board/getBoardList}">글목록</a>
 
 <hr>
 
 <h2>댓글</h2>
 <form th:action="@{/comment/updateComment}" method="post">
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+<table th:align="center" th:cellpadding="0" th:cellspacing="0">
 <tr>
-	<th bgcolor="orange" width="50">작성자</th>
-	<th bgcolor="orange" width="400">내용</th>
-	<th bgcolor="orange" width="100">등록일</th>
-	<th bgcolor="orange" width="100" colspan="2"></th>
+	<th class="tagBox"width="50">작성자</th>
+	<th class="tagBox"width="400">내용</th>
+	<th class="tagBox"width="100">등록일</th>
+	<th class="tagBox"width="100" colspan="2"></th>
 </tr>
 <tr th:each="cmt : ${commentList}">
 	<input name="cmtId" type="hidden" th:value="${cmt.cmtId}">
@@ -114,10 +115,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <form name="cmtForm" th:action="@{/comment/insertComment}" method="post" onsubmit="return checkValid()">
 	<input name="board" type="hidden" th:value="${board.seq}">
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+<table th:align="center" th:cellpadding="0" th:cellspacing="0">
 	<tr>
-		<td bgcolor="orange" width="50">작성자</td>
-		<td bgcolor="orange" width="400" align="center">내용</td>
+		<td class="tagBox"width="50">작성자</td>
+		<td class="tagBox"width="400" align="center">내용</td>
 		<td rowspan="2" align="center">
 			<input type="submit" value="댓글 등록">
 		</td>
