@@ -26,5 +26,5 @@ public interface BoardService {
 	
 	void uploadFiles(MultipartFile file, String nameFile) throws IOException, FirebaseAuthException;
 	
-	
+	Page<Board> getMostViewedPostsInOneWeek();
 }

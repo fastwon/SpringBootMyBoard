@@ -31,6 +31,29 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<br>
 	<hr>
 	
+	
+	<h2>최근 일주일 조회수 TOP3</h2>
+	
+	<table>
+		<tr>
+			<th class="tagBox" width="50">번호</th>
+			<th class="tagBox" width="400">제목</th>
+			<th class="tagBox"  width="100">작성자</th>
+			<th class="tagBox"  width="100">등록일</th>
+			<th class="tagBox"  width="50">조회수</th>
+		</tr>
+	
+		<tr th:each="board : ${boardList}">
+			<td th:text="${board.seq}" th:align="center">
+			<td><a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a><img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18"></td>
+			<td th:text="${board.member.name}" th:align="center">
+			<td th:text="${#dates.format(board.createDate, 'yyyy-MM-dd HH:mm')}" th:align="center">
+			<td th:text="${board.cnt}" th:align="center">
+		</tr>
+	
+	</table>
+	
+	
 	<!-- <p id="remaining-session-time"></p>
 
     <script>

@@ -61,8 +61,6 @@ public class BoardController {
 	
 	@GetMapping("/getBoard")
 	public String getBoard(Board board, Model model, PageNum pn) {
-		board.setCnt(board.getCnt()+1);
-		
 		Page<Comment> commentList = commentService.getCommentList(pn, board);
 		model.addAttribute("board", boardService.getBoard(board));
 		model.addAttribute("commentList", commentList);

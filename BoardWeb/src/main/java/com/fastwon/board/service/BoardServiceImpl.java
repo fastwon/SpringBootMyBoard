@@ -3,6 +3,9 @@ package com.fastwon.board.service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -109,4 +112,13 @@ public class BoardServiceImpl implements BoardService {
 		bucket.create(nameFile.toString(), content, file.getContentType());
 	}
 
+	@Override
+	public Page<Board> getMostViewedPostsInOneWeek() {
+		Date oneWeekAgo = new Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000);
+        PageRequest pageRequest = PageRequest.of(0, 3);  // 첫 페이지의 상위 3개 게시글을 가져오도록 설정
+		
+		return boardRepo.findTopByOrderByViewCountDescAndCreatedAtAfter(oneWeekAgo, pageRequest);
+	}
+	
+	
 }
