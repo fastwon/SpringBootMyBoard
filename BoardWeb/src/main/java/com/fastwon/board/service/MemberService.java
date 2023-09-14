@@ -15,4 +15,6 @@ public interface MemberService {
 	void deleteMember(String id);
 	
 	Page<Member> getMemberList();
+	
+	Member getMember(String id);
 }

@@ -81,5 +81,10 @@ public class MemberServiceImpl implements MemberService {
 		Pageable pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "id");
 		return memberRepo.getMemberList(pageable);
 	}
+	
+	@Override
+	public Member getMember(String id) {
+		return memberRepo.findById(id).get();
+	}
 
 }

@@ -4,16 +4,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 	<title>Fastwon Admin</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<style>
-		body {
-			margin-left: 100;
-			
-		}
-	</style>
 	<link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
 </head>
 
-<body>
+<body th:align="center">
 	<h1>관리자님 환영합니다.^^</h1>
 	<div sec:authorize="isAuthenticated()">
 		관리자 
