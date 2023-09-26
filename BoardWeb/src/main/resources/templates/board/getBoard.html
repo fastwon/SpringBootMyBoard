@@ -21,23 +21,22 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <body th:align="center">
 
 <nav>
-<hr>
-
-<span sec:authorize="isAuthenticated()">
-	<b><font color="red">
-	<span sec:authentication="principal.member.name"></span>
-	</font></b> 님 환영합니다.........................
-</span>
-	<a sec:authorize="isAnonymous()" href="system/login">로그인</a><th:block sec:authorize="isAnonymous()" th:text="'/'"/><a sec:authorize="isAnonymous()" href="member/createMember">회원가입</a>
-	<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
-	<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminPage}">회원관리</a>&nbsp;&nbsp;&nbsp;
-<a th:href="@{/}">HOME</a>
-
-<hr>
+	<hr>
+		<span sec:authorize="isAuthenticated()">
+			<b><font color="red">
+				<span sec:authentication="principal.member.name"></span>
+			</font></b> 님 환영합니다.........................
+		</span>
+		<a sec:authorize="isAnonymous()" th:href="@{/system/login}">로그인</a><th:block sec:authorize="isAnonymous()" th:text="'/'"/><a sec:authorize="isAnonymous()" th:href="@{/member/createMember}">회원가입</a>
+		<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
+		<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminPage}">회원관리</a>&nbsp;&nbsp;&nbsp;
+		<a th:href="@{/}">HOME</a>&nbsp;&nbsp;&nbsp;
+		<a sec:authorize="isAuthenticated()" th:href="@{'/member/' + ${#authentication.principal.member.id} + '/myPage'}">마이페이지</a>
+	<hr>
 </nav>
 
 <h1>게시글 상세</h1>
-<form th:action="@{/board/updateBoard}" method="get">
+<form th:action="@{'/board/' + ${#authentication.principal.member.id} + '/updateBoard'}" method="get">
 	
 	<input name="seq" type="hidden" th:value="${board.seq}">
 
@@ -78,7 +77,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 </table>
 </form>
 <a th:href="@{/board/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a th:if="${#authentication.principal.member.name == board.member.name} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{/board/deleteBoard(seq=${board.seq})}" onclick="return confirm('글을 삭제하겠습니까?')">글삭제</a>&nbsp;&nbsp;&nbsp;
+<a th:if="${#authentication.principal.member.name == board.member.name} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{'/board/' + ${#authentication.principal.member.id}+ '/deleteBoard?seq=' + ${board.seq}}" onclick="return confirm('글을 삭제하겠습니까?')">글삭제</a>&nbsp;&nbsp;&nbsp;
 <a th:href="@{/board/getBoardList}">글목록</a>
 
 <hr>

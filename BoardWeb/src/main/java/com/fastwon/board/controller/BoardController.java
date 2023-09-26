@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -100,9 +101,12 @@ public class BoardController {
 	}
 
 	
-	@GetMapping("/updateBoard")
-	public String updateBoardView(Board board, Model model) {
-		Board findBoard = boardService.getUdateBoard(board);
+	@GetMapping("/{id}/updateBoard")
+	public String updateBoardView(@PathVariable String id, Board board, Model model, @AuthenticationPrincipal SecurityUser principal) {
+		if(!id.equals(principal.getMember().getId())) {
+			return "system/accessDenied";
+		}
+		Board findBoard = boardService.getUpdateBoard(board);
 		
 		model.addAttribute("board", findBoard);
 		return "board/updateBoard";
@@ -127,7 +131,7 @@ public class BoardController {
             //board 객체에 이미지 URL을 저장하는 필드를 추가
             board.setPhotoUrl("/uploads/" + fileName);
         } else {
-        	Board findBoard = boardService.getUdateBoard(board);
+        	Board findBoard = boardService.getUpdateBoard(board);
         	board.setPhotoUrl(findBoard.getPhotoUrl());
         }
 		
@@ -135,9 +139,12 @@ public class BoardController {
 		return "redirect:getBoardList";
 	}
 	
-	@GetMapping("deleteBoard")
-	public String deleteBoard(Board board) {
+	@GetMapping("/{id}/deleteBoard")
+	public String deleteBoard(@PathVariable String id, Board board, @AuthenticationPrincipal SecurityUser principal) {
+		if(!id.equals(principal.getMember().getId())) {
+			return "system/accessDenied";
+		}
 		boardService.deleteBoard(board);
-		return "redirect:getBoardList";
+		return "redirect:../getBoardList";
 	}
 }

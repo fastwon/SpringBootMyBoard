@@ -17,4 +17,6 @@ public interface MemberService {
 	Page<Member> getMemberList();
 	
 	Member getMember(String id);
+	
+	String updateMember(Member member, String newPassword);
 }

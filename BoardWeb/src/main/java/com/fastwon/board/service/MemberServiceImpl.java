@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fastwon.board.domain.Board;
@@ -26,6 +27,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	private CommentRepository commentRepo;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	
 	@Override
@@ -85,6 +89,20 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member getMember(String id) {
 		return memberRepo.findById(id).get();
+	}
+	
+	@Override
+	public String updateMember(Member member, String newPassword) {
+		Member saveMember = memberRepo.findById(member.getId()).get();
+		
+		if(passwordEncoder.matches(member.getPassword(), saveMember.getPassword())) {
+			saveMember.setPassword(passwordEncoder.encode(newPassword));
+			memberRepo.save(saveMember);
+			
+			return null;
+		}
+		return "기존 비밀번호가 일치하지 않습니다.";
+		
 	}
 
 }

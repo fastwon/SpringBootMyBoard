@@ -23,19 +23,18 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <body th:align="center">
 
 <nav>
-<hr>
-
-<span sec:authorize="isAuthenticated()">
-	<b><font color="red">
-	<span sec:authentication="principal.member.name"></span>
-	</font></b> 님 환영합니다.........................
-</span>
-	<a sec:authorize="isAnonymous()" href="system/login">로그인</a><th:block sec:authorize="isAnonymous()" th:text="'/'"/><a sec:authorize="isAnonymous()" href="member/createMember">회원가입</a>
-	<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
-	<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminPage}">회원관리</a>&nbsp;&nbsp;&nbsp;
-<a th:href="@{/}">HOME</a>
-
-<hr>
+	<hr>
+		<span sec:authorize="isAuthenticated()">
+			<b><font color="red">
+				<span sec:authentication="principal.member.name"></span>
+			</font></b> 님 환영합니다.........................
+		</span>
+		<a sec:authorize="isAnonymous()" th:href="@{/system/login}">로그인</a><th:block sec:authorize="isAnonymous()" th:text="'/'"/><a sec:authorize="isAnonymous()" th:href="@{/member/createMember}">회원가입</a>
+		<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
+		<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminPage}">회원관리</a>&nbsp;&nbsp;&nbsp;
+		<a th:href="@{/}">HOME</a>&nbsp;&nbsp;&nbsp;
+		<a sec:authorize="isAuthenticated()" th:href="@{'/member/' + ${#authentication.principal.member.id} + '/myPage'}">마이페이지</a>
+	<hr>
 </nav>
 
 <h1>게시글 등록</h1>

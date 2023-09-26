@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		security.userDetailsService(userDetailsService);
 
 		security.authorizeRequests().antMatchers("/", "/system/**", "/member/createMember", "/board/getBoardList").permitAll();
-		security.authorizeRequests().antMatchers("/board/**").authenticated();
+		security.authorizeRequests().antMatchers("/board/**", "/member/**").authenticated();
 		security.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
 
 		security.csrf().disable();

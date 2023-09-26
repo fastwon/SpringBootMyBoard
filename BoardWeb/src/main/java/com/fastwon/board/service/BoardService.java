@@ -22,7 +22,7 @@ public interface BoardService {
 	
 	Page<Board> getBoardList(Search search, PageNum pn);
 	
-	Board getUdateBoard(Board board);
+	Board getUpdateBoard(Board board);
 	
 	void uploadFiles(MultipartFile file, String nameFile) throws IOException, FirebaseAuthException;
 	
