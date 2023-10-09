@@ -112,31 +112,36 @@ public class BoardController {
 		return "board/updateBoard";
 	}
 	
-	@PostMapping("/updateBoard")
-	public String updateBoard(Board board, @RequestParam("photo") MultipartFile photo) {
+	@PostMapping("/{id}/updateBoard")
+	public String updateBoard(@PathVariable String id, @AuthenticationPrincipal SecurityUser principal, Board board, @RequestParam("photo") MultipartFile photo) {
+		if(!id.equals(principal.getMember().getId())) {
+			return "system/accessDenied";
+		}
+		
 		// 사진 파일 처리 로직
         if (!photo.isEmpty()) { // 파일이 비어있지 않다면 처리
             // 원하는 경로에 파일을 저장
-            String fileName = StringUtils.cleanPath(Objects.requireNonNull(photo.getOriginalFilename()));
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(photo.getOriginalFilename())) + System.currentTimeMillis();
             // 경로 확인 및 생성
-            Path path = Paths.get("src/main/resources/static/uploads/" + fileName);
+//            Path path = Paths.get("src/main/resources/static/uploads/" + fileName);
             try {
-                Files.createDirectories(path.getParent()); // 부모 디렉토리 생성
-                Files.write(path, photo.getBytes());
-            } catch (IOException e) {
+            	String imageUrl = "https://firebasestorage.googleapis.com/v0/b/fastwonboard.appspot.com/o/" + fileName + "?alt=media";
+        		boardService.uploadFiles(photo, fileName);         	          	
+        		
+        		//board 객체에 이미지 URL을 저장하는 필드를 추가
+        		board.setPhotoUrl(imageUrl);
+            } catch (IOException | FirebaseAuthException e) {
                 // 파일 저장 중 오류 처리
                 e.printStackTrace();
             }
 
-            //board 객체에 이미지 URL을 저장하는 필드를 추가
-            board.setPhotoUrl("/uploads/" + fileName);
         } else {
         	Board findBoard = boardService.getUpdateBoard(board);
         	board.setPhotoUrl(findBoard.getPhotoUrl());
         }
 		
 		boardService.updateBoard(board);
-		return "redirect:getBoardList";
+		return "redirect:../getBoardList";
 	}
 	
 	@GetMapping("/{id}/deleteBoard")
