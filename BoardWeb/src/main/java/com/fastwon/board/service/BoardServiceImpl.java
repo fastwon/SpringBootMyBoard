@@ -3,8 +3,6 @@ package com.fastwon.board.service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fastwon.board.domain.Board;
-import com.fastwon.board.domain.Comment;
 import com.fastwon.board.domain.PageNum;
 import com.fastwon.board.domain.QBoard;
 import com.fastwon.board.domain.Search;
 import com.fastwon.board.persistence.BoardRepository;
 import com.fastwon.board.persistence.CommentRepository;
-import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.cloud.StorageClient;
@@ -89,11 +85,13 @@ public class BoardServiceImpl implements BoardService {
 		BooleanBuilder builder = new BooleanBuilder();
 		
 		QBoard qboard = QBoard.board;
-		
+
 		if(search.getSearchCondition().equals("TITLE")) {
 			builder.and(qboard.title.like("%" + search.getSearchKeyword() + "%"));
 		} else if(search.getSearchCondition().equals("CONTENT")) {
 			builder.and(qboard.content.like("%" + search.getSearchKeyword() + "%"));
+		} else if(search.getSearchCondition().equals("WRITER")) {
+		    builder.and(qboard.member.name.like("%" + search.getSearchKeyword() + "%"));
 		}
 		
 		Pageable pageable = PageRequest.of(pn.getNum()-1, 10, Sort.Direction.DESC, "createDate");

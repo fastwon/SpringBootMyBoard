@@ -22,3 +22,12 @@
  	border: thin solid #9999FF;
  	border-radius: 5px;
  }
+ 
+ .current {
+ 	background-color: #9999FF;
+ }
+
+ h1 a {
+ 	text-decoration: none;
+ 	color: black;
+ }

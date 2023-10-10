@@ -16,15 +16,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 				<span sec:authentication="principal.member.name"></span>
 			</font></b> 님 환영합니다.........................
 		</span>
-		<a sec:authorize="isAnonymous()" th:href="@{/system/login}">로그인</a><th:block sec:authorize="isAnonymous()" th:text="'/'"/><a sec:authorize="isAnonymous()" th:href="@{/member/createMember}">회원가입</a>
-		<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
+		<a sec:authorize="isAnonymous()" th:href="@{/system/login}">로그인</a><th:block sec:authorize="isAnonymous()" th:text="'/'"/><a sec:authorize="isAnonymous()" th:href="@{/member/createMember}">회원가입</a>		
 		<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminPage}">회원관리</a>&nbsp;&nbsp;&nbsp;
 		<a th:href="@{/}">HOME</a>&nbsp;&nbsp;&nbsp;
-		<a sec:authorize="isAuthenticated()" th:href="@{'/member/' + ${#authentication.principal.member.id} + '/myPage'}">마이페이지</a>
+		<a sec:authorize="isAuthenticated()" th:href="@{'/member/' + ${#authentication.principal.member.id} + '/myPage'}">마이페이지</a>&nbsp;&nbsp;&nbsp;
+		<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}" onclick="return confirm('정말 로그아웃 하시겠습니까?')">로그아웃</a>
 	<hr>
 </nav>
 
-<h1>게시글 목록</h1>
+<h1><a th:href="@{/board/getBoardList}">게시글 목록</a></h1>
 
 <hr>
 <!-- 검색 시작 -->
@@ -33,8 +33,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<tr>
 		<td align="right">
 			<select name="searchCondition" th:value="${gsc}">
-				<option value="TITLE">제목</option>
-				<option value="CONTENT">내용</option>
+				<option value="TITLE" th:selected="${gsc == 'TITLE'}">제목</option>
+				<option value="CONTENT" th:selected="${gsc == 'CONTENT'}">내용</option>
+				<option value="WRITER" th:selected="${gsc == 'WRITER'}">작성자</option>
 			</select>
 			 	<input name="searchKeyword" type="text" th:value="${gsk}"/>
 			<input type="submit" value="검색"/>
@@ -75,8 +76,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		            이전
 		        </button>&nbsp;
    			</td>
-			<td th:each="numb : ${#numbers.sequence((currentPage-1)/5*5+1, (currentPage-1)/5*5+1+4)}" th:if="${numb <= totalPages}">
-				<input type="submit" name="num" th:value="${numb}">		
+			<td th:each="numb : ${#numbers.sequence((currentPage-1)/5*5+1, (currentPage-1)/5*5+1+4)}" th:if="${numb <= totalPages}" >
+				<input type="submit" name="num" th:value="${numb}" th:classappend="${numb == currentPage ? 'current' : ''}">	
 			</td>
 			<td>&nbsp;
 		        <button type="submit" name="num" th:value="${(currentPage-1)/5 < (totalPages-1)/5 ? (currentPage-1)/5*5+1+5 : totalPages}">
@@ -93,7 +94,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <br>
 <a th:href="@{/board/insertBoard}">게시글 등록</a>
-<hr>
-<a sec:authorize="isAuthenticated()" th:href="@{'/member/' + ${#authentication.principal.member.id} + '/deleteMember'}" onclick="return confirm('정말 탈퇴하겠습니까?')">회원탈퇴</a>
+
 </body>
 </html>

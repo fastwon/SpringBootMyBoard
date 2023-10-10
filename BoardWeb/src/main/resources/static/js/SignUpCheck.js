@@ -51,7 +51,7 @@ function checkDuplicate() {
     var id = document.signUpForm.id.value;
     
     if (id) {
-        var url = '/member/checkId?id=' + encodeURIComponent(id);
+        var url = '/system/checkId?id=' + encodeURIComponent(id);
         var xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = function() {
@@ -82,7 +82,7 @@ function checkDuplicate() {
 function checkNameDuplicate() {
     var name = document.signUpForm.name.value;
     if (name) {
-        var url = '/member/checkName?name=' + encodeURIComponent(name);
+        var url = '/system/checkName?name=' + encodeURIComponent(name);
         var xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = function() {
