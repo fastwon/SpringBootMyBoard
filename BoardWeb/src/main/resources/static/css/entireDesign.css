@@ -4,7 +4,7 @@
 
  a {
  	text-decoration: none;
- 	color: #5555FF;
+ 	color: #7777FF;
  }
  
  table {
@@ -14,13 +14,13 @@
   margin-right: auto;
   border-spacing: 3px;
   background-color: #ECECEC;
-  
  }
 
  .tagBox {
  	background-color: #CCCCFF;
  	border: thin solid #9999FF;
  	border-radius: 5px;
+ 	text-align: center;
  }
  
  .current {
@@ -31,3 +31,47 @@
  	text-decoration: none;
  	color: black;
  }
+ 
+ textarea {
+ 	width: 100%;
+ 	resize: none;
+ 	border: thin solid #9999FF;
+ 	border-radius: 5px;
+ }
+ 
+ input {
+ 	border: thin solid #9999FF;
+ 	border-radius: 5px;
+ 	height: 23px;
+ }
+ 
+ input[type=file] {
+ 	border: thin solid #9999FF;
+ 	border-radius: 5px;
+ 	height: 25px;
+ 	width: 100%;
+ }
+ 
+ select {
+ 	border: thin solid #9999FF;
+ 	border-radius: 5px;
+ 	height: 23px;
+ }
+ 
+ 
+ .btn {
+	background-color: #7777FF;
+	border: thin solid #9999FF;
+ 	border-radius: 5px;
+ 	color: white;
+ 	height: 30px;
+ }
+
+ .btn:hover {
+	background-color: #9999FF;
+ }
+ 
+ .mm {
+ 	display: none;
+ }
+ 

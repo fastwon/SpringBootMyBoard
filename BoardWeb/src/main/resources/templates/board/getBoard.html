@@ -69,12 +69,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		<td class="tagBox"th:text="조회수"></td>
 		<td th:text="${board.cnt}"></td>
 	</tr>
-	<tr>
-		<td colspan="2" align="center">
-			<input th:if="${#authentication.principal.member.name} == ${board.member.name}" type="submit" value="게시글 수정">
-		</td>
-	</tr>
 </table>
+<br>
+<input class="btn" th:if="${#authentication.principal.member.name} == ${board.member.name}" type="submit" value="게시글 수정">
+
 </form>
 <a th:href="@{/board/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a th:if="${#authentication.principal.member.name == board.member.name} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{'/board/' + ${#authentication.principal.member.id}+ '/deleteBoard?seq=' + ${board.seq}}" onclick="return confirm('글을 삭제하겠습니까?')">글삭제</a>&nbsp;&nbsp;&nbsp;
@@ -86,27 +84,30 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <form th:action="@{/comment/updateComment}" method="post">
 <table th:align="center" th:cellpadding="0" th:cellspacing="0">
 <tr>
-	<th class="tagBox"width="50">작성자</th>
-	<th class="tagBox"width="400">내용</th>
-	<th class="tagBox"width="100">등록일</th>
-	<th class="tagBox"width="100" colspan="2"></th>
+	<th class="tagBox" width="50">작성자</th>
+	<th class="tagBox" width="400">내용</th>
+	<th class="tagBox" width="150">등록일</th>
+	<th class="tagBox" width="100" colspan="2"></th>
 </tr>
 <tr th:each="cmt : ${commentList}">
 	<input name="cmtId" type="hidden" th:value="${cmt.cmtId}">
-	<td th:text="${cmt.cmtWriter}" th:align="center"></td>
-	<td th:align="center"><textarea name="cmtContent" th:text="${cmt.cmtContent}" cols="54" rows="2"></textarea></td>
-	<td th:text="${#dates.format(cmt.cmtCreateDate, 'yyyy-MM-dd')}" th:align="center"></td>
-	<td align="center"><input type="submit" th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" value="수정"></input></td>
-	<!-- <th:block sec:authorize ="hasRole('ROLE_ADMIN')" th:with="isAdmin"> -->
-	<td align="center"><a th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId}, board.seq=${cmt.board.getSeq()})}" onclick="return confirm('댓글을 삭제하겠습니까?')">삭제</a></td>
+	<td th:text="${cmt.cmtWriter}"></td>
+	<td>
+		<textarea th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" name="cmtContent" th:text="${cmt.cmtContent}" cols="54" maxlength="100"></textarea>
+		<th:block th:if="${#authentication.principal.member.name} != ${cmt.cmtWriter}" th:text="${cmt.cmtContent}"></th:block>
+	</td>
+	<td th:text="${#dates.format(cmt.cmtCreateDate, 'yy-MM-dd HH:mm:ss')}" th:align="center"></td>
+	<td><input class="btn" type="submit" th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" value="수정"></input></td>
+	<td><a th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId}, board.seq=${cmt.board.getSeq()})}" onclick="return confirm('댓글을 삭제하겠습니까?')">삭제</a></td>
 </tr>
 </table>
 </form>
 
+
 <form th:action="@{/board/getBoard}" method="get">
 	<input name="board" type="hidden" th:value="${board.seq}">
-	<th:block th:each="numb : ${#numbers.sequence(1, commentList.getTotalPages())}">
-		<input type="submit" name="cmtPage" th:value="${numb}">		
+	<th:block th:each="numb : ${#numbers.sequence(1, totalPages)}">
+		<input type="submit" name="cmtPage" th:value="${numb}" th:classappend="${numb == currentPage ? 'current' : ''}">		
 	</th:block>
 </form>
 
@@ -116,15 +117,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<input name="board" type="hidden" th:value="${board.seq}">
 <table th:align="center" th:cellpadding="0" th:cellspacing="0">
 	<tr>
-		<td class="tagBox"width="50">작성자</td>
-		<td class="tagBox"width="400" align="center">내용</td>
+		<th class="tagBox"width="50">작성자</th>
+		<th class="tagBox"width="400" align="center">내용</th>
 		<td rowspan="2" align="center">
-			<input type="submit" value="댓글 등록">
+			<input class="btn" type="submit" value="댓글 등록">
 		</td>
 	</tr>
 	<tr>
 		<td><span sec:authentication="principal.member.name"></span></td>
-		<td><textarea name="cmtContent" cols="54" rows="2" maxlength="100"></textarea></td>
+		<td><textarea name="cmtContent" cols="54" maxlength="100"></textarea></td>
 	</tr>
 </table>
 </form>

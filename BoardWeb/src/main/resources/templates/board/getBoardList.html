@@ -38,7 +38,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 				<option value="WRITER" th:selected="${gsc == 'WRITER'}">작성자</option>
 			</select>
 			 	<input name="searchKeyword" type="text" th:value="${gsk}"/>
-			<input type="submit" value="검색"/>
+			<input class="btn" type="submit" value="검색"/>
 		</td>
 	</tr>
 </table>
@@ -72,7 +72,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<table th:align="center">
 		<tr>
 			<td>
-		        <button type="submit" name="num" th:value="${currentPage > 5 ? (currentPage-1)/5*5+1-5 : 1}">
+		        <button  class="btn" type="submit" name="num" th:value="${currentPage > 5 ? (currentPage-1)/5*5+1-5 : 1}">
 		            이전
 		        </button>&nbsp;
    			</td>
@@ -80,7 +80,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 				<input type="submit" name="num" th:value="${numb}" th:classappend="${numb == currentPage ? 'current' : ''}">	
 			</td>
 			<td>&nbsp;
-		        <button type="submit" name="num" th:value="${(currentPage-1)/5 < (totalPages-1)/5 ? (currentPage-1)/5*5+1+5 : totalPages}">
+		        <button class="btn" type="submit" name="num" th:value="${(currentPage-1)/5 < (totalPages-1)/5 ? (currentPage-1)/5*5+1+5 : totalPages}">
 		            다음
 		        </button>
    			</td>

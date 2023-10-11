@@ -33,7 +33,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<tr>
 		<td class="tagBox">아이디</td>
 		<td><input type="text" name="id" placeholder="5자 이상 10자 이하로 입력하세요" maxlength="10" size="30"/></td>
-		<td><button type="button" onclick="checkDuplicate()">중복확인</button></td>
+		<td><button class="btn" type="button" onclick="checkDuplicate()">중복확인</button></td>
 	</tr>
 	<tr>
 		<td class="tagBox" >비밀번호</td>
@@ -47,14 +47,14 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<tr>
 		<td class="tagBox" >이름</td>
 		<td><input type="text" name="name" maxlength="10"/></td>
-		<td><button type="button" onclick="checkNameDuplicate()">중복확인</button></td>
+		<td><button class="btn" type="button" onclick="checkNameDuplicate()">중복확인</button></td>
 	</tr>
 	<tr>
 		<td><input type="hidden" name="role" value="ROLE_MEMBER"></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="center">
-			<input type="submit" value="회원가입"/>
+			<input class="btn" type="submit" value="회원가입"/>
 		</td>
 	</tr>
 </table>

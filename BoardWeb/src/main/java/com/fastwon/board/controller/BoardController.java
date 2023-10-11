@@ -52,6 +52,9 @@ public class BoardController {
 		
 		// totalPages와 currentPage를 추가
 	    int totalPages = boardList.getTotalPages();
+	    if (totalPages == 0) {
+			totalPages = 1;
+		}
 	    int currentPage = boardList.getNumber() + 1; // getPageNumber는 0부터 시작하기 때문에 +1
 
 	    model.addAttribute("totalPages", totalPages);
@@ -65,6 +68,16 @@ public class BoardController {
 		Page<Comment> commentList = commentService.getCommentList(pn, board);
 		model.addAttribute("board", boardService.getBoard(board));
 		model.addAttribute("commentList", commentList);
+		
+		// totalPages와 currentPage를 추가
+	    int totalPages = commentList.getTotalPages();
+	    if (totalPages == 0) {
+			totalPages = 1;
+		}
+	    int currentPage = commentList.getNumber() + 1; // getPageNumber는 0부터 시작하기 때문에 +1
+
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("currentPage", currentPage);
 		return "board/getBoard";
 	}
 	
