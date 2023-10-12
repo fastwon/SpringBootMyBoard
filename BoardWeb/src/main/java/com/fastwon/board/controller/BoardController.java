@@ -64,10 +64,17 @@ public class BoardController {
 	}
 	
 	@GetMapping("/getBoard")
-	public String getBoard(Board board, Model model, PageNum pn) {
+	public String getBoard(Board board, Model model, PageNum pn, Integer chkUpdate) {
 		Page<Comment> commentList = commentService.getCommentList(pn, board);
 		model.addAttribute("board", boardService.getBoard(board));
 		model.addAttribute("commentList", commentList);
+
+		if(chkUpdate == null) {
+			chkUpdate = -1;
+		}
+		
+		model.addAttribute("chkUpdate", chkUpdate);
+		
 		
 		// totalPages와 currentPage를 추가
 	    int totalPages = commentList.getTotalPages();

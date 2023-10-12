@@ -71,7 +71,22 @@
 	background-color: #9999FF;
  }
  
+ .btn2 {
+	background-color: #ECECEC;
+	border: thin solid #9999FF;
+ 	border-radius: 5px;
+ 	height: 30px;
+ }
+
+ .btn2:hover {
+	background-color: #9999FF;
+ }
+ 
  .mm {
  	display: none;
+ }
+ 
+ table table {
+ 	background-color: white;
  }
  

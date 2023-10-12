@@ -81,27 +81,38 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <hr>
 
 <h2>댓글</h2>
-<form th:action="@{/comment/updateComment}" method="post">
 <table th:align="center" th:cellpadding="0" th:cellspacing="0">
 <tr>
 	<th class="tagBox" width="50">작성자</th>
 	<th class="tagBox" width="400">내용</th>
 	<th class="tagBox" width="150">등록일</th>
-	<th class="tagBox" width="100" colspan="2"></th>
+	<th class="tagBox" width="50" colspan="2"></th>
 </tr>
 <tr th:each="cmt : ${commentList}">
-	<input name="cmtId" type="hidden" th:value="${cmt.cmtId}">
 	<td th:text="${cmt.cmtWriter}"></td>
 	<td>
-		<textarea th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" name="cmtContent" th:text="${cmt.cmtContent}" cols="54" maxlength="100"></textarea>
-		<th:block th:if="${#authentication.principal.member.name} != ${cmt.cmtWriter}" th:text="${cmt.cmtContent}"></th:block>
+		<form name="uForm" th:action="@{/comment/updateComment}" method="post" onsubmit="return checkUpdateValid(this)">
+			<input name="cmtId" type="hidden" th:value="${cmt.cmtId}">
+			<table th:width="400">
+				<tr>
+					<td colspan="2">
+						<textarea th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter} and ${chkUpdate == cmt.cmtId}" name="cmtContent" th:text="${cmt.cmtContent}" cols="54" maxlength="100"></textarea>
+						<th:block th:if="${#authentication.principal.member.name} != ${cmt.cmtWriter} or ${chkUpdate != cmt.cmtId}" th:text="${cmt.cmtContent}"></th:block>
+					</td>
+					
+				</tr>
+				<tr th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter} and ${chkUpdate == cmt.cmtId}">
+					<td><input class="btn" type="submit" value="수정"></input></td>
+					<td><a th:href="@{/board/getBoard(seq=${board.seq})}"><button class="btn2" type="button">닫기</button></a></td>
+				</tr>
+			</table>
+		</form>
 	</td>
 	<td th:text="${#dates.format(cmt.cmtCreateDate, 'yy-MM-dd HH:mm:ss')}" th:align="center"></td>
-	<td><input class="btn" type="submit" th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" value="수정"></input></td>
+	<td><a th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" th:href="@{/board/getBoard(seq=${board.seq}, chkUpdate=${cmt.cmtId})}"><button class="btn" type="button">수정</button></a></td>
 	<td><a th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId}, board.seq=${cmt.board.getSeq()})}" onclick="return confirm('댓글을 삭제하겠습니까?')">삭제</a></td>
 </tr>
 </table>
-</form>
 
 
 <form th:action="@{/board/getBoard}" method="get">
@@ -125,7 +136,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</tr>
 	<tr>
 		<td><span sec:authentication="principal.member.name"></span></td>
-		<td><textarea name="cmtContent" cols="54" maxlength="100"></textarea></td>
+		<td><textarea name="cmtContent" cols="54" rows="4" maxlength="100"></textarea></td>
 	</tr>
 </table>
 </form>
