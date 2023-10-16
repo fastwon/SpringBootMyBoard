@@ -90,3 +90,14 @@
  	background-color: white;
  }
  
+ .dateBox {
+ 	font-size: 14;
+ }
+ 
+ form {
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+ 
+ 

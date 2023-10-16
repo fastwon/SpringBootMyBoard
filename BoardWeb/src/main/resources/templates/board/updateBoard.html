@@ -38,7 +38,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 </nav>
 
 <h1>게시글 등록</h1>
-<form name="isbForm" th:action="@{'/board/' + ${#authentication.principal.member.id} + '/updateBoard'}" method="post" enctype="multipart/form-data" onsubmit="return checkValid()">
+<form name="isbForm" th:action="@{/board/updateBoard}" method="post" enctype="multipart/form-data" onsubmit="return checkValid()">
 <table th:align="center" th:cellpadding="0" th:cellspacing="0">
 	
 	<tr>

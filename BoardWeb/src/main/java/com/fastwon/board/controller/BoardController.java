@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -132,11 +133,8 @@ public class BoardController {
 		return "board/updateBoard";
 	}
 	
-	@PostMapping("/{id}/updateBoard")
-	public String updateBoard(@PathVariable String id, @AuthenticationPrincipal SecurityUser principal, Board board, @RequestParam("photo") MultipartFile photo) {
-		if(!id.equals(principal.getMember().getId())) {
-			return "system/accessDenied";
-		}
+	@PostMapping("/updateBoard")
+	public String updateBoard(Board board, @RequestParam("photo") MultipartFile photo) {
 		
 		// 사진 파일 처리 로직
         if (!photo.isEmpty()) { // 파일이 비어있지 않다면 처리
@@ -161,15 +159,12 @@ public class BoardController {
         }
 		
 		boardService.updateBoard(board);
-		return "redirect:../getBoardList";
+		return "redirect:getBoardList";
 	}
 	
-	@GetMapping("/{id}/deleteBoard")
-	public String deleteBoard(@PathVariable String id, Board board, @AuthenticationPrincipal SecurityUser principal) {
-		if(!id.equals(principal.getMember().getId())) {
-			return "system/accessDenied";
-		}
+	@DeleteMapping("/deleteBoard")
+	public String deleteBoard(Board board) {
 		boardService.deleteBoard(board);
-		return "redirect:../getBoardList";
+		return "redirect:getBoardList";
 	}
 }

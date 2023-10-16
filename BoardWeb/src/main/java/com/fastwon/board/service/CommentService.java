@@ -12,7 +12,7 @@ public interface CommentService {
 
 	Comment updateComment(Comment comment);
 	
-	void deleteComment(Comment comment);
+	long deleteComment(Comment comment);
 	
 	Page<Comment> getCommentList(PageNum pn, Board board);
 }

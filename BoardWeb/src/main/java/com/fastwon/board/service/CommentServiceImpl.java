@@ -38,10 +38,14 @@ public class CommentServiceImpl implements CommentService {
 	}
 	
 	@Override
-	public void deleteComment(Comment comment) {
-		commentRepo.deleteById(comment.getCmtId());
-//		System.out.println("서비스 실행 된다.");
+	public long deleteComment(Comment comment) {
+		Comment comment1 = commentRepo.findById(comment.getCmtId()).get();
 		
+		long bSeq = comment1.getBoard().getSeq();
+		
+		commentRepo.deleteById(comment.getCmtId());
+		
+		return bSeq;
 	}
 	
 	@Override

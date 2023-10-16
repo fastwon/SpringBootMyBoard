@@ -43,6 +43,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</tr>
 </table>
 </form>
+
+<br>
 <!-- 검색 종료 -->
 
 <table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width="850">
@@ -56,9 +58,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <tr th:each="board : ${boardList}">
 	<td th:text="${board.seq}" th:align="center">
-	<td><a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a><img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18"></td>
+	<td>
+		<a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a>
+		<img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18">
+		<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'">
+	</td>
 	<td th:text="${board.member.name}" th:align="center">
-	<td th:text="${#dates.format(board.createDate, 'yyyy-MM-dd HH:mm')}" th:align="center">
+	<td class="dateBox" th:text="${#dates.format(board.createDate, 'yyyy-MM-dd HH:mm')}" th:align="center">
 	<td th:text="${board.cnt}" th:align="center">
 </tr>
 

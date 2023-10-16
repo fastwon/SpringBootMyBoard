@@ -5,6 +5,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,11 +39,8 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/{id}/deleteMember")
-	public String deleteMember(@PathVariable String id, @AuthenticationPrincipal SecurityUser principal) {
-		if(!id.equals(principal.getMember().getId())) {
-			return "system/accessDenied";
-		}
+	@DeleteMapping("/{id}")
+	public String deleteMember(@PathVariable String id) {
 		memberService.deleteMember(id);
 		return "redirect:/system/logout";
 	}

@@ -40,82 +40,95 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	
 	<input name="seq" type="hidden" th:value="${board.seq}">
 
-<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width=500>
-	<tr>
-		<td class="tagBox"th:text="제목" width="80"></td>
-		<td th:text="${board.title}"></td>
+	<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width=500>
+		<tr>
+			<td class="tagBox"th:text="제목" width="80"></td>
+			<td th:text="${board.title}"></td>
+			
+		</tr>
+		<tr>
+			<td class="tagBox"th:text="작성자"></td>
+			<td th:text="${board.member.name}"></td>
+		</tr>
+	</table>
+			
+	<img th:src="@{${board.photoUrl}}">
 		
-	</tr>
-	<tr>
-		<td class="tagBox"th:text="작성자"></td>
-		<td th:text="${board.member.name}"></td>
-	</tr>
-</table>
-		
-		<img th:src="@{${board.photoUrl}}">
-	
-<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width=500>
-	<tr>
-		<td class="tagBox"th:text="내용" width="80">
-		<td th:text="${board.content}" height=200>
-			<!-- <textarea th:text="${board.content}" cols="40" rows="10"></textarea> -->
-		</td>
-	</tr>
-	<tr>
-		<td class="tagBox"th:text="등록일"></td>
-		<td th:text="${#dates.format(board.createDate, 'yyyy-MM-dd')}">
-	</tr>
-	<tr>
-		<td class="tagBox"th:text="조회수"></td>
-		<td th:text="${board.cnt}"></td>
-	</tr>
-</table>
-<br>
-<input class="btn" th:if="${#authentication.principal.member.name} == ${board.member.name}" type="submit" value="게시글 수정">
-
+	<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width=500>
+		<tr>
+			<td class="tagBox"th:text="내용" width="80">
+			<td th:text="${board.content}" height=200>
+				<!-- <textarea th:text="${board.content}" cols="40" rows="10"></textarea> -->
+			</td>
+		</tr>
+		<tr>
+			<td class="tagBox"th:text="등록일"></td>
+			<td class="dateBox" th:text="${#dates.format(board.createDate, 'yyyy-MM-dd')}">
+		</tr>
+		<tr>
+			<td class="tagBox"th:text="조회수"></td>
+			<td th:text="${board.cnt}"></td>
+		</tr>
+	</table>
+	<br>
+	<input class="btn" th:if="${#authentication.principal.member.name} == ${board.member.name}" type="submit" value="게시글 수정">
 </form>
-<a th:href="@{/board/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a th:if="${#authentication.principal.member.name == board.member.name} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{'/board/' + ${#authentication.principal.member.id}+ '/deleteBoard?seq=' + ${board.seq}}" onclick="return confirm('글을 삭제하겠습니까?')">글삭제</a>&nbsp;&nbsp;&nbsp;
+<form th:if="${#authentication.principal.member.name == board.member.name} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:action="@{/board/deleteBoard}" method="post">
+	<input type="hidden" name="_method" th:value="delete"/>
+	<input type="hidden" name="seq" th:value="${board.seq}"/>
+	<button class="btn2" onclick="return confirm('글을 삭제하겠습니까?')">글삭제</button>
+</form>
+<br>
+<br>
+<a th:href="@{/board/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;
 <a th:href="@{/board/getBoardList}">글목록</a>
+<br>
 
 <hr>
 
-<h2>댓글</h2>
+<h2 id="comment">댓글</h2>
 <table th:align="center" th:cellpadding="0" th:cellspacing="0">
-<tr>
-	<th class="tagBox" width="50">작성자</th>
-	<th class="tagBox" width="400">내용</th>
-	<th class="tagBox" width="150">등록일</th>
-	<th class="tagBox" width="50" colspan="2"></th>
-</tr>
-<tr th:each="cmt : ${commentList}">
-	<td th:text="${cmt.cmtWriter}"></td>
-	<td>
-		<form name="uForm" th:action="@{/comment/updateComment}" method="post" onsubmit="return checkUpdateValid(this)">
-			<input name="cmtId" type="hidden" th:value="${cmt.cmtId}">
-			<table th:width="400">
-				<tr>
-					<td colspan="2">
-						<textarea th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter} and ${chkUpdate == cmt.cmtId}" name="cmtContent" th:text="${cmt.cmtContent}" cols="54" maxlength="100"></textarea>
-						<th:block th:if="${#authentication.principal.member.name} != ${cmt.cmtWriter} or ${chkUpdate != cmt.cmtId}" th:text="${cmt.cmtContent}"></th:block>
-					</td>
-					
-				</tr>
-				<tr th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter} and ${chkUpdate == cmt.cmtId}">
-					<td><input class="btn" type="submit" value="수정"></input></td>
-					<td><a th:href="@{/board/getBoard(seq=${board.seq})}"><button class="btn2" type="button">닫기</button></a></td>
-				</tr>
-			</table>
-		</form>
-	</td>
-	<td th:text="${#dates.format(cmt.cmtCreateDate, 'yy-MM-dd HH:mm:ss')}" th:align="center"></td>
-	<td><a th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" th:href="@{/board/getBoard(seq=${board.seq}, chkUpdate=${cmt.cmtId})}"><button class="btn" type="button">수정</button></a></td>
-	<td><a th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:href="@{/comment/deleteComment(cmtId=${cmt.cmtId}, board.seq=${cmt.board.getSeq()})}" onclick="return confirm('댓글을 삭제하겠습니까?')">삭제</a></td>
-</tr>
+	<tr>
+		<th class="tagBox" width="50">작성자</th>
+		<th class="tagBox" width="400">내용</th>
+		<th class="tagBox" width="150">등록일</th>
+		<th class="tagBox" width="50" colspan="2"></th>
+	</tr>
+	<tr th:each="cmt : ${commentList}">
+		<td th:text="${cmt.cmtWriter}"></td>
+		<td>
+			<form name="uForm" th:action="@{/comment/updateComment}" method="post" onsubmit="return checkUpdateValid(this)">
+				<input name="cmtId" type="hidden" th:value="${cmt.cmtId}">
+				<table th:width="400">
+					<tr>
+						<td colspan="2">
+							<textarea th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter} and ${chkUpdate == cmt.cmtId}" name="cmtContent" th:text="${cmt.cmtContent}" cols="54" maxlength="100"></textarea>
+							<th:block th:if="${#authentication.principal.member.name} != ${cmt.cmtWriter} or ${chkUpdate != cmt.cmtId}" th:text="${cmt.cmtContent}"></th:block>
+						</td>
+						
+					</tr>
+					<tr th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter} and ${chkUpdate == cmt.cmtId}">
+						<td><input class="btn" type="submit" value="수정"></input></td>
+						<td><a th:href="@{'/board/getBoard?seq=' + ${board.seq} + '#comment'}"><button class="btn2" type="button">닫기</button></a></td>
+					</tr>
+				</table>
+			</form>
+		</td>
+		<td class="dateBox" th:text="${#dates.format(cmt.cmtCreateDate, 'yy-MM-dd HH:mm:ss')}" th:align="center"></td>
+		<td><a th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" th:href="@{'/board/getBoard?seq=' + ${board.seq} + '&chkUpdate=' + ${cmt.cmtId} + '&cmtPage=' + ${currentPage} + '#comment'}"><button class="btn" type="button">수정</button></a></td>
+		<td>
+			<form th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}" th:action="@{/comment/deleteComment(cmtId=${cmt.cmtId})}" method="post">
+				<input type="hidden" name="_method" th:value="delete"/>
+				<input type="hidden" name=cmtId th:value="${cmt.cmtId}"/>
+				<button class="btn2" onclick="return confirm('댓글을 삭제하겠습니까?')">삭제</button>
+			</form>
+		</td>
+	</tr>
 </table>
 
+<br>
 
-<form th:action="@{/board/getBoard}" method="get">
+<form th:action="@{'/board/getBoard' + '#comment'}" method="get">
 	<input name="board" type="hidden" th:value="${board.seq}">
 	<th:block th:each="numb : ${#numbers.sequence(1, totalPages)}">
 		<input type="submit" name="cmtPage" th:value="${numb}" th:classappend="${numb == currentPage ? 'current' : ''}">		

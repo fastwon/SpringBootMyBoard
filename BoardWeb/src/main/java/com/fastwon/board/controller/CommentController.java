@@ -3,7 +3,9 @@ package com.fastwon.board.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,7 +14,6 @@ import com.fastwon.board.security.SecurityUser;
 import com.fastwon.board.service.CommentService;
 
 @Controller
-@RequestMapping
 public class CommentController {
 	
 	@Autowired
@@ -28,19 +29,17 @@ public class CommentController {
 	
 	@PostMapping("/comment/updateComment")
 	public String updateComment(Comment comment) {
-		Comment comment1 =commentService.updateComment(comment);
+		Comment comment1 = commentService.updateComment(comment);
 		
 		return "redirect:/board/getBoard?seq=" + comment1.getBoard().getSeq();
 	}
 	
-	@GetMapping("/comment/deleteComment")
+	@DeleteMapping("/comment/deleteComment")
 	public String deleteComment(Comment comment) {
-		long bSeq = comment.getBoard().getSeq();
 
-		commentService.deleteComment(comment);
+		 long bSeq = commentService.deleteComment(comment);
 		
 		return "redirect:/board/getBoard?seq=" + bSeq;
-//		return "forward:/board/getBoardList";
 	}
 
 }
