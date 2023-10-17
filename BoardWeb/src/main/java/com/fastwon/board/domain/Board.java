@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,6 +35,9 @@ public class Board {
 	private String content;
 	
 	private String photoUrl;
+	
+	@Enumerated(EnumType.STRING)
+	private Category category;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(updatable = false)

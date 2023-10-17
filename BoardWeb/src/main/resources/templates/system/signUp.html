@@ -12,18 +12,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <body th:align="center">
 
 <nav>
-	<hr>
-		<span sec:authorize="isAuthenticated()">
-			<b><font color="red">
-				<span sec:authentication="principal.member.name"></span>
-			</font></b> 님 환영합니다.........................
-		</span>
-		<a sec:authorize="isAnonymous()" th:href="@{/system/login}">로그인</a><th:block sec:authorize="isAnonymous()" th:text="'/'"/><a sec:authorize="isAnonymous()" th:href="@{/member/createMember}">회원가입</a>		
-		<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminPage}">회원관리</a>&nbsp;&nbsp;&nbsp;
-		<a th:href="@{/}">HOME</a>&nbsp;&nbsp;&nbsp;
-		<a sec:authorize="isAuthenticated()" th:href="@{'/member/' + ${#authentication.principal.member.id} + '/myPage'}">마이페이지</a>&nbsp;&nbsp;&nbsp;
-		<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}" onclick="return confirm('정말 로그아웃 하시겠습니까?')">로그아웃</a>
-	<hr>
+	<div th:replace="/entire/nav :: navBar"></div>
 </nav>
 
 <h1>회원가입</h1>
@@ -59,5 +48,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</tr>
 </table>
 </form>
+
+	    <div th:replace="/entire/foot :: foot"></div>
+	    
 </body>
 </html>

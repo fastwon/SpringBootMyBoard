@@ -1,5 +1,7 @@
 package com.fastwon.board.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +33,7 @@ public class CommentServiceImpl implements CommentService {
 		Comment comment1 = commentRepo.findById(comment.getCmtId()).get();
 		
 		comment1.setCmtContent(comment.getCmtContent());
+		comment1.setCmtCreateDate(new Date());
 		
 		commentRepo.save(comment1);
 		

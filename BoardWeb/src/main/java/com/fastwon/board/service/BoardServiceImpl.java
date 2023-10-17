@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fastwon.board.domain.Board;
+import com.fastwon.board.domain.Category;
 import com.fastwon.board.domain.PageNum;
 import com.fastwon.board.domain.QBoard;
 import com.fastwon.board.domain.Search;
@@ -85,7 +86,7 @@ public class BoardServiceImpl implements BoardService {
 		BooleanBuilder builder = new BooleanBuilder();
 		
 		QBoard qboard = QBoard.board;
-
+		
 		if(search.getSearchCondition().equals("TITLE")) {
 			builder.and(qboard.title.like("%" + search.getSearchKeyword() + "%"));
 		} else if(search.getSearchCondition().equals("CONTENT")) {
@@ -118,5 +119,24 @@ public class BoardServiceImpl implements BoardService {
 		return boardRepo.findTopByOrderByViewCountDescAndCreatedAtAfter(oneWeekAgo, pageRequest);
 	}
 	
+	@Override
+	public Page<Board> getBoardList2(Search search, PageNum pn, Category category) {
+		BooleanBuilder builder = new BooleanBuilder();
+		
+		QBoard qboard = QBoard.board;
+		
+		builder.and(qboard.category.eq(category));
+		
+		if(search.getSearchCondition().equals("TITLE")) {
+			builder.and(qboard.title.like("%" + search.getSearchKeyword() + "%"));
+		} else if(search.getSearchCondition().equals("CONTENT")) {
+			builder.and(qboard.content.like("%" + search.getSearchKeyword() + "%"));
+		} else if(search.getSearchCondition().equals("WRITER")) {
+		    builder.and(qboard.member.name.like("%" + search.getSearchKeyword() + "%"));
+		}
+		
+		Pageable pageable = PageRequest.of(pn.getNum()-1, 10, Sort.Direction.DESC, "createDate");
+		return boardRepo.findAll(builder, pageable);
+	}
 	
 }

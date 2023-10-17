@@ -29,7 +29,6 @@ public class Comment {
 	private String cmtContent;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(updatable = false)
 	private Date cmtCreateDate = new Date();
 
 	@ManyToOne

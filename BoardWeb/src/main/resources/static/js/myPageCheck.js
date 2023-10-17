@@ -22,3 +22,15 @@ function checkValid(){
 	
 		return true;
 }
+
+function chkForDelete() {
+	let pInput = document.mdForm.password;
+	
+	if(isEmpty(pInput)) {
+		alert("비밀번호를 입력하지 않았습니다.");
+		return false;
+	}
+	
+	return true;
+	
+}

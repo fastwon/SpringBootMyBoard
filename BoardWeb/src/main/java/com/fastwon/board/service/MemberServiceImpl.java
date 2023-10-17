@@ -61,8 +61,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public void deleteMember(String id) {
+	public String deleteMember(String id, String password) {
 		Member member = memberRepo.findById(id).get();
+		
+		if(!passwordEncoder.matches(password, member.getPassword())) {
+			return "비밀번호가 일치하지 않습니다.";
+		}
 		
 		if(!member.getBoardList().isEmpty()) {
 			List<Board> boardList = member.getBoardList();
@@ -77,6 +81,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		memberRepo.deleteById(id);
 		
+		return null;
 	}
 	
 	@Override

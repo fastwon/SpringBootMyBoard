@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fastwon.board.domain.Board;
+import com.fastwon.board.domain.Category;
 import com.fastwon.board.domain.Comment;
 import com.fastwon.board.domain.PageNum;
 import com.fastwon.board.domain.Search;
@@ -40,13 +42,21 @@ public class BoardController {
 	private CommentService commentService;
 	
 	@RequestMapping("/getBoardList")
-	public String getBoardList(Model model, Search search, PageNum pn) {
+	public String getBoardList(Model model, Search search, PageNum pn, @RequestParam(value = "category", required = false) Category category) {
 		if(search.getSearchCondition() == null)
 			search.setSearchCondition("TITLE");
 		if(search.getSearchKeyword() == null)
 			search.setSearchKeyword("");
 		
-		Page<Board> boardList = boardService.getBoardList(search, pn);
+		Page<Board> boardList;
+	    
+	    if(category != null) {
+	        boardList = boardService.getBoardList2(search, pn, category);
+	        model.addAttribute("category", category);
+	    } else {
+	        boardList = boardService.getBoardList(search, pn);
+	    }
+	    
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("gsc", search.getSearchCondition());
 		model.addAttribute("gsk", search.getSearchKeyword());
@@ -90,7 +100,8 @@ public class BoardController {
 	}
 	
 	@GetMapping("/insertBoard")
-	public String insertBoardView() {
+	public String insertBoardView(Model model, @RequestParam(value = "category", required = false) Category category) {
+		model.addAttribute("category", category);
 		return "board/insertBoard";
 	}
 	
@@ -122,18 +133,19 @@ public class BoardController {
 	}
 
 	
-	@GetMapping("/{id}/updateBoard")
-	public String updateBoardView(@PathVariable String id, Board board, Model model, @AuthenticationPrincipal SecurityUser principal) {
-		if(!id.equals(principal.getMember().getId())) {
+	@GetMapping("/updateBoard")
+	public String updateBoardView(Board board, Model model, @AuthenticationPrincipal SecurityUser principal) {
+		Board findBoard = boardService.getUpdateBoard(board);
+
+		if(!findBoard.getMember().getId().equals(principal.getMember().getId())) {
 			return "system/accessDenied";
 		}
-		Board findBoard = boardService.getUpdateBoard(board);
 		
 		model.addAttribute("board", findBoard);
 		return "board/updateBoard";
 	}
 	
-	@PostMapping("/updateBoard")
+	@PutMapping("/updateBoard")
 	public String updateBoard(Board board, @RequestParam("photo") MultipartFile photo) {
 		
 		// 사진 파일 처리 로직

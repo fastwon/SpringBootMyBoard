@@ -40,8 +40,16 @@ public class MemberController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public String deleteMember(@PathVariable String id) {
-		memberService.deleteMember(id);
+	public String deleteMember(@PathVariable String id, Member member, Model model) {
+		String password = member.getPassword();
+		
+		String errorMsg = memberService.deleteMember(id, password);
+		
+		if(errorMsg != null) {
+			model.addAttribute("errorMsg", errorMsg);
+			return "/system/myPage";
+		}
+		
 		return "redirect:/system/logout";
 	}
 	
