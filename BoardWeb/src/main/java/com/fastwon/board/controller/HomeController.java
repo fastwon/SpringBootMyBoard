@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.fastwon.board.domain.Board;
+import com.fastwon.board.domain.Category;
 import com.fastwon.board.service.BoardService;
 
 @Controller
@@ -17,9 +18,19 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String home(Model model) {
-		Page<Board> boardList = boardService.getMostViewedPostsInOneWeek();
+		Category c1 = Category.GAME;
+		Category c2 = Category.FOOTBALL;
+		Category c3 = Category.MUSIC;
 		
-		model.addAttribute("boardList", boardList);
+		Page<Board> boardList1 = boardService.getMostViewedPostsInOneWeek(c1);
+		Page<Board> boardList2 = boardService.getMostViewedPostsInOneWeek(c2);
+		Page<Board> boardList3 = boardService.getMostViewedPostsInOneWeek(c3);
+		Page<Board> boardList4 = boardService.getMostViewedPostsInOneWeek(null);
+		
+		model.addAttribute("boardList1", boardList1);
+		model.addAttribute("boardList2", boardList2);
+		model.addAttribute("boardList3", boardList3);
+		model.addAttribute("boardList4", boardList4);
 		
 		return "home";
 	}

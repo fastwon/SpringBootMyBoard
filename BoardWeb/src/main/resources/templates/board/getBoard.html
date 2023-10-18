@@ -2,7 +2,7 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-	<title>Fastwon Board</title>
+	<title th:text="Fastwon +' ' + ${board.category}"></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script type="text/javascript" src="/js/FastValidChecker.js"></script>
 	<script type="text/javascript" src="/js/commentCheck.js"></script>
@@ -20,11 +20,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <body th:align="center">
 
-<nav>
-	<div th:replace="/entire/nav :: navBar"></div>
-</nav>
+	<header>
+		<div th:replace="/entire/head :: header"></div>
+	</header>
 
-<h1>게시글 상세</h1>
+<h1 th:text="${board.category}"></h1>
 <form th:action="@{/board/updateBoard}" method="get">
 	
 	<input name="seq" type="hidden" th:value="${board.seq}">
@@ -70,7 +70,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <br>
 <br>
 <a th:href="@{/board/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;
-<a th:href="@{/board/getBoardList}">글목록</a>
+<a th:href="@{/board/getBoardList(category=${board.category})}">글목록</a>
 <br>
 
 <hr>

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fastwon.board.domain.Board;
 import com.fastwon.board.domain.Category;
@@ -48,14 +49,14 @@ public class BoardController {
 		if(search.getSearchKeyword() == null)
 			search.setSearchKeyword("");
 		
-		Page<Board> boardList;
-	    
-	    if(category != null) {
-	        boardList = boardService.getBoardList2(search, pn, category);
-	        model.addAttribute("category", category);
-	    } else {
-	        boardList = boardService.getBoardList(search, pn);
-	    }
+		
+		Page<Board> boardList = boardService.getBoardList2(search, pn, category);
+		if(category != null) {
+			model.addAttribute("category", category.name());
+		} else {
+			model.addAttribute("category", category);
+			
+		}
 	    
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("gsc", search.getSearchCondition());
@@ -106,7 +107,7 @@ public class BoardController {
 	}
 	
 	@PostMapping("/insertBoard")
-	public String insertBoard(Board board, @RequestParam("photo") MultipartFile photo, @AuthenticationPrincipal SecurityUser principal) {
+	public String insertBoard(Board board, @RequestParam("photo") MultipartFile photo, @AuthenticationPrincipal SecurityUser principal, RedirectAttributes redirect) {
 	    board.setMember(principal.getMember());
 	    
 	    // 사진 파일 처리 로직
@@ -129,6 +130,9 @@ public class BoardController {
 	    }
 	    
 	    boardService.insertBoard(board);
+	    
+	    redirect.addAttribute("category", board.getCategory());
+	    
 	    return "redirect:getBoardList";
 	}
 
@@ -146,7 +150,7 @@ public class BoardController {
 	}
 	
 	@PutMapping("/updateBoard")
-	public String updateBoard(Board board, @RequestParam("photo") MultipartFile photo) {
+	public String updateBoard(Board board, @RequestParam("photo") MultipartFile photo, RedirectAttributes redirect) {
 		
 		// 사진 파일 처리 로직
         if (!photo.isEmpty()) { // 파일이 비어있지 않다면 처리
@@ -171,6 +175,19 @@ public class BoardController {
         }
 		
 		boardService.updateBoard(board);
+		
+		System.out.println(board.getCategory());
+		System.out.println("--------------------------------------");
+		System.out.println("--------------------------------------");
+		System.out.println("--------------------------------------");
+		System.out.println("--------------------------------------");
+		System.out.println("--------------------------------------");
+		System.out.println("--------------------------------------");
+		System.out.println("--------------------------------------");
+		System.out.println("--------------------------------------");
+		
+		redirect.addAttribute("category", board.getCategory());
+		
 		return "redirect:getBoardList";
 	}
 	

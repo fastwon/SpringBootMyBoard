@@ -2,46 +2,125 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-	<title>FASTWON</title>
+	<title>Fastwon</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
 </head>
 <body th:align="center">
 
-<nav>
-	<div th:replace="/entire/nav :: navBar"></div>
-</nav>
-
+	<header>
+		<div th:replace="/entire/head :: header"></div>
+	</header>
+	<div th:replace="/entire/fastLink :: fastLink"></div>
+	
 	<br>
-	<h1 align="center"><a th:href="@{/}">FASTWON</a></h1>
+	<h2>&lt;최근 일주일 조회수 TOP3&gt;</h2>
 	<hr>
-	<p align="center"><a th:href="@{/board/getBoardList(category='GAME')}">글 목록 바로가기</a></p>
-	<p align="center"><a th:href="@{/board/getBoardList(category='FOOTBALL')}">글 목록 바로가기</a></p>
-	<p align="center"><a th:href="@{/board/getBoardList(category='MUSIC')}">글 목록 바로가기</a></p>
-	<br>
-	<hr>
-	
-	
-	<h2>최근 일주일 조회수 TOP3</h2>
-	
 	<table>
 		<tr>
-			<th class="tagBox" width="50">번호</th>
-			<th class="tagBox" width="400">제목</th>
-			<th class="tagBox"  width="100">작성자</th>
-			<th class="tagBox"  width="100">등록일</th>
-			<th class="tagBox"  width="50">조회수</th>
+			<td class="tagBox">
+				<h2>게임</h2>
+				
+				<table>
+					<tr>
+						<th class="tagBox" width="50">번호</th>
+						<th class="tagBox" width="400">제목</th>
+						<th class="tagBox"  width="100">작성자</th>
+						<th class="tagBox"  width="50">조회수</th>
+					</tr>
+				
+					<tr  th:each="board : ${boardList1}">
+						<td th:text="${board.seq}" th:align="center">
+						<td>
+							<a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a>
+							<img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18">
+							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'">
+						</td>
+						<td th:text="${board.member.name}" th:align="center">
+						<td th:text="${board.cnt}" th:align="center">
+					</tr>
+				
+				</table>
+			</td>
+			<td class="tagBox">
+				<h2>축구</h2>
+				
+				<table>
+					<tr>
+						<th class="tagBox" width="50">번호</th>
+						<th class="tagBox" width="400">제목</th>
+						<th class="tagBox"  width="100">작성자</th>
+						<th class="tagBox"  width="50">조회수</th>
+					</tr>
+				
+					<tr th:each="board : ${boardList2}">
+						<td th:text="${board.seq}" th:align="center">
+						<td>
+							<a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a>
+							<img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18">
+							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'">
+						</td>
+						<td th:text="${board.member.name}" th:align="center">
+						<td th:text="${board.cnt}" th:align="center">
+					</tr>
+				
+				</table>
+			</td>
 		</tr>
-	
-		<tr th:each="board : ${boardList}">
-			<td th:text="${board.seq}" th:align="center">
-			<td><a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a><img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18"></td>
-			<td th:text="${board.member.name}" th:align="center">
-			<td th:text="${#dates.format(board.createDate, 'yyyy-MM-dd HH:mm')}" th:align="center">
-			<td th:text="${board.cnt}" th:align="center">
+		<tr>
+			<td class="tagBox">
+				<h2>음악</h2>
+				
+				<table>
+					<tr>
+						<th class="tagBox" width="50">번호</th>
+						<th class="tagBox" width="400">제목</th>
+						<th class="tagBox"  width="100">작성자</th>
+						<th class="tagBox"  width="50">조회수</th>
+					</tr>
+				
+					<tr th:each="board : ${boardList3}">
+						<td th:text="${board.seq}" th:align="center">
+						<td>
+							<a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a>
+							<img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18">
+							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'">
+						</td>
+						<td th:text="${board.member.name}" th:align="center">
+						<td th:text="${board.cnt}" th:align="center">
+					</tr>
+				
+				</table>
+			</td>
+			<td class="tagBox">
+				<h2>자유</h2>
+				
+				<table>
+					<tr>
+						<th class="tagBox" width="50">번호</th>
+						<th class="tagBox" width="400">제목</th>
+						<th class="tagBox"  width="100">작성자</th>
+						<th class="tagBox"  width="50">조회수</th>
+					</tr>
+				
+					<tr th:each="board : ${boardList4}">
+						<td th:text="${board.seq}" th:align="center">
+						<td>
+							<a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a>
+							<img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18">
+							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'">
+						</td>
+						<td th:text="${board.member.name}" th:align="center">
+						<td th:text="${board.cnt}" th:align="center">
+					</tr>
+				
+				</table>
+			</td>
 		</tr>
-	
 	</table>
+	
+	
+	
 	
 	
 	<!-- <p id="remaining-session-time"></p>

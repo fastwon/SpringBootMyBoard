@@ -2,12 +2,14 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-	<title>navigation bar</title>
+	<title>Header</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 
-<div th:fragment="navBar">
-<hr>
+<div th:fragment="header">
+	<br>
+	<h1><a th:href="@{/}">FASTWON</a></h1>
+	<hr>
 	<span sec:authorize="isAuthenticated()">
 		<b><font color="red">
 			<span sec:authentication="principal.member.name"></span>
@@ -18,5 +20,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<a th:href="@{/}">HOME</a>&nbsp;&nbsp;&nbsp;
 	<a sec:authorize="isAuthenticated()" th:href="@{'/member/' + ${#authentication.principal.member.id} + '/myPage'}">마이페이지</a>&nbsp;&nbsp;&nbsp;
 	<a sec:authorize="isAuthenticated()" th:href="@{/system/logout}" onclick="return confirm('정말 로그아웃 하시겠습니까?')">로그아웃</a>
-<hr>
+	<hr>
+	<!-- <h2>
+	<a th:href="@{/board/getBoardList(category='GAME')}">게임</a>&nbsp;&nbsp;&nbsp;
+	<a th:href="@{/board/getBoardList(category='FOOTBALL')}">축구</a>&nbsp;&nbsp;&nbsp;
+	<a th:href="@{/board/getBoardList(category='MUSIC')}">음악</a>&nbsp;&nbsp;&nbsp;
+	<a th:href="@{/board/getBoardList}">자유</a>
+	</h2>
+	<hr> -->
 </div>

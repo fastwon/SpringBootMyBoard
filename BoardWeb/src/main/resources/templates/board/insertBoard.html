@@ -22,9 +22,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <body th:align="center">
 
-<nav>
-	<div th:replace="/entire/nav :: navBar"></div>
-</nav>
+	<header>
+		<div th:replace="/entire/head :: header"></div>
+	</header>
 
 <h1>게시글 등록</h1>
 <form name="isbForm" th:action="@{/board/insertBoard}" method="post" enctype="multipart/form-data" onsubmit="return checkValid()">

@@ -2,22 +2,29 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-	<title>Fastwon Board</title>
+	<title th:text="Fastwon +' ' + ${category}"></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
 </head>
 
 <body th:align="center">
 
-<nav>
-	<div th:replace="/entire/nav :: navBar"></div>
-</nav>
+	<header>
+		<div th:replace="/entire/head :: header"></div>
+	</header>
+	<h2>
+	<a th:href="@{/board/getBoardList(category='GAME')}" th:classappend="${category} == 'GAME' ? 'current'">게임</a>&nbsp;&nbsp;&nbsp;
+	<a th:href="@{/board/getBoardList(category='FOOTBALL')}" th:classappend="${category} == 'FOOTBALL' ? 'current'">축구</a>&nbsp;&nbsp;&nbsp;
+	<a th:href="@{/board/getBoardList(category='MUSIC')}" th:classappend="${category} == 'MUSIC' ? 'current'">음악</a>&nbsp;&nbsp;&nbsp;
+	<a th:href="@{/board/getBoardList}" th:classappend="${category} == null ? 'current'">자유</a>
+	</h2>
+	<hr>
+<!-- <h2><a th:href="@{/board/getBoardList(category=${category})}" th:text="${category}"></a></h2>
+<h2><a th:if="${category} == null" th:href="@{/board/getBoardList}">자유</a></h2> -->
 
-<h1><a th:href="@{/board/getBoardList(category=${category})}" th:text="${category}"></a></h1>
-
-<hr>
 <!-- 검색 시작 -->
 <form th:action="@{/board/getBoardList}" method="get">
+	<input type="hidden" name="category" th:value="${category}"/>
 <table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width="700">
 	<tr>
 		<td align="right">
@@ -64,6 +71,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <form th:action="@{/board/getBoardList}" method="get">
 	<input type="hidden" name="searchCondition" th:value="${gsc}">
 	<input type="hidden" name="searchKeyword" th:value="${gsk}">
+	<input type="hidden" name="category" th:value="${category}">
 	<table th:align="center">
 		<tr>
 			<td>
@@ -88,7 +96,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 
 <br>
-<a th:href="@{/board/insertBoard(category=${category})}">게시글 등록</a>
+<a th:href="@{/board/insertBoard(category=${category})}">글등록</a>
 
 	    <div th:replace="/entire/foot :: foot"></div>
 

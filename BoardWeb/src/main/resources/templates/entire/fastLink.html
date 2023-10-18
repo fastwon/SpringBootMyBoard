@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<title>navigation bar</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<div th:fragment="fastLink">
+	<h2>
+	<a th:href="@{/board/getBoardList(category='GAME')}">게임</a>&nbsp;&nbsp;&nbsp;
+	<a th:href="@{/board/getBoardList(category='FOOTBALL')}">축구</a>&nbsp;&nbsp;&nbsp;
+	<a th:href="@{/board/getBoardList(category='MUSIC')}">음악</a>&nbsp;&nbsp;&nbsp;
+	<a th:href="@{/board/getBoardList}">자유</a>
+	</h2>
+	<hr>
+</div>

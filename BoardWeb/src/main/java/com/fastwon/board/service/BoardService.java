@@ -21,7 +21,7 @@ public interface BoardService {
 	
 	Board getBoard(Board board);
 	
-	Page<Board> getBoardList(Search search, PageNum pn);
+	/* Page<Board> getBoardList(Search search, PageNum pn); */
 	
 	Page<Board> getBoardList2(Search search, PageNum pn, Category category);
 	
@@ -29,5 +29,7 @@ public interface BoardService {
 	
 	void uploadFiles(MultipartFile file, String nameFile) throws IOException, FirebaseAuthException;
 	
-	Page<Board> getMostViewedPostsInOneWeek();
+	/* Page<Board> getMostViewedPostsInOneWeek(); */
+
+	Page<Board> getMostViewedPostsInOneWeek(Category category);
 }

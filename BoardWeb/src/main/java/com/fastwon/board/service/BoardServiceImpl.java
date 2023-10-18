@@ -81,23 +81,24 @@ public class BoardServiceImpl implements BoardService {
 		return findBoard;
 	}
 	
-	@Override
-	public Page<Board> getBoardList(Search search, PageNum pn) {
-		BooleanBuilder builder = new BooleanBuilder();
-		
-		QBoard qboard = QBoard.board;
-		
-		if(search.getSearchCondition().equals("TITLE")) {
-			builder.and(qboard.title.like("%" + search.getSearchKeyword() + "%"));
-		} else if(search.getSearchCondition().equals("CONTENT")) {
-			builder.and(qboard.content.like("%" + search.getSearchKeyword() + "%"));
-		} else if(search.getSearchCondition().equals("WRITER")) {
-		    builder.and(qboard.member.name.like("%" + search.getSearchKeyword() + "%"));
-		}
-		
-		Pageable pageable = PageRequest.of(pn.getNum()-1, 10, Sort.Direction.DESC, "createDate");
-		return boardRepo.findAll(builder, pageable);
-	}
+	// 카테고리 추가로 현재 미사용
+	/*
+	 * @Override public Page<Board> getBoardList(Search search, PageNum pn) {
+	 * BooleanBuilder builder = new BooleanBuilder();
+	 * 
+	 * QBoard qboard = QBoard.board;
+	 * 
+	 * if(search.getSearchCondition().equals("TITLE")) {
+	 * builder.and(qboard.title.like("%" + search.getSearchKeyword() + "%")); } else
+	 * if(search.getSearchCondition().equals("CONTENT")) {
+	 * builder.and(qboard.content.like("%" + search.getSearchKeyword() + "%")); }
+	 * else if(search.getSearchCondition().equals("WRITER")) {
+	 * builder.and(qboard.member.name.like("%" + search.getSearchKeyword() + "%"));
+	 * }
+	 * 
+	 * Pageable pageable = PageRequest.of(pn.getNum()-1, 10, Sort.Direction.DESC,
+	 * "createDate"); return boardRepo.findAll(builder, pageable); }
+	 */
 	
 	@Value("${app.firebase-bucket}")
 	private String firebaseBucket;
@@ -111,13 +112,27 @@ public class BoardServiceImpl implements BoardService {
 		bucket.create(nameFile.toString(), content, file.getContentType());
 	}
 
+	/*
+	 * @Override public Page<Board> getMostViewedPostsInOneWeek() { Date oneWeekAgo
+	 * = new Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000); PageRequest
+	 * pageRequest = PageRequest.of(0, 3); // 첫 페이지의 상위 3개 게시글을 가져오도록 설정
+	 * 
+	 * return boardRepo.findTopByOrderByViewCountDescAndCreatedAtAfter(oneWeekAgo,
+	 * pageRequest); }
+	 */
+	
 	@Override
-	public Page<Board> getMostViewedPostsInOneWeek() {
+	public Page<Board> getMostViewedPostsInOneWeek(Category category) {
 		Date oneWeekAgo = new Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000);
-        PageRequest pageRequest = PageRequest.of(0, 3);  // 첫 페이지의 상위 3개 게시글을 가져오도록 설정
-		
-		return boardRepo.findTopByOrderByViewCountDescAndCreatedAtAfter(oneWeekAgo, pageRequest);
+		PageRequest pageRequest = PageRequest.of(0, 3); // 첫 페이지의 상위 3개 게시글을 가져오도록 설정
+
+		if(category != null) {
+			return boardRepo.findTopByCategoryAndCreateDateAfterOrderByViewCountDesc(category, oneWeekAgo, pageRequest);
+		} else {
+			return boardRepo.findByCategoryIsNullAndCreateDateAfterOrderByViewCountDesc(oneWeekAgo, pageRequest);
+		}
 	}
+
 	
 	@Override
 	public Page<Board> getBoardList2(Search search, PageNum pn, Category category) {
@@ -125,7 +140,11 @@ public class BoardServiceImpl implements BoardService {
 		
 		QBoard qboard = QBoard.board;
 		
-		builder.and(qboard.category.eq(category));
+		if(category == null) {
+			builder.and(qboard.category.isNull());
+		} else {
+			builder.and(qboard.category.eq(category));
+		}
 		
 		if(search.getSearchCondition().equals("TITLE")) {
 			builder.and(qboard.title.like("%" + search.getSearchKeyword() + "%"));
