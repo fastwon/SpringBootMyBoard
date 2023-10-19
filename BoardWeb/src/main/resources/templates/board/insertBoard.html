@@ -58,7 +58,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</tr>
 </table>
 </form>
-<a th:href="@{/board/getBoardList}">글목록</a>
+<a th:href="@{/board/getBoardList(category=${category})}">글목록</a>
 
     <div th:replace="/entire/foot :: foot"></div>
     

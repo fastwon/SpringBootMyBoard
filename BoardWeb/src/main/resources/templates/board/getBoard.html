@@ -60,16 +60,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		</tr>
 	</table>
 	<br>
-	<input class="btn" th:if="${#authentication.principal.member.name} == ${board.member.name}" type="submit" value="게시글 수정">
+	<input sec:authorize="isAuthenticated()" class="btn" th:if="${#authentication.principal.member.name} == ${board.member.name}" type="submit" value="게시글 수정">
 </form>
-<form th:if="${#authentication.principal.member.name == board.member.name} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:action="@{/board/deleteBoard}" method="post">
+<form sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.name == board.member.name} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:action="@{/board/deleteBoard}" method="post">
 	<input type="hidden" name="_method" th:value="delete"/>
 	<input type="hidden" name="seq" th:value="${board.seq}"/>
 	<button class="btn2" onclick="return confirm('글을 삭제하겠습니까?')">글삭제</button>
 </form>
 <br>
 <br>
-<a th:href="@{/board/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;
 <a th:href="@{/board/getBoardList(category=${board.category})}">글목록</a>
 <br>
 
@@ -91,12 +90,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 				<table th:width="400">
 					<tr>
 						<td colspan="2">
-							<textarea th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter} and ${chkUpdate == cmt.cmtId}" name="cmtContent" th:text="${cmt.cmtContent}" cols="54" maxlength="100"></textarea>
-							<th:block th:if="${#authentication.principal.member.name} != ${cmt.cmtWriter} or ${chkUpdate != cmt.cmtId}" th:text="${cmt.cmtContent}"></th:block>
+							<textarea sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter} and ${chkUpdate == cmt.cmtId}" name="cmtContent" th:text="${cmt.cmtContent}" cols="54" maxlength="100"></textarea>
+							<th:block sec:authorize="isAuthenticated()"  th:if="${#authentication.principal.member.name} != ${cmt.cmtWriter} or ${chkUpdate != cmt.cmtId}" th:text="${cmt.cmtContent}"></th:block>
+							<th:block sec:authorize="isAnonymous()" th:text="${cmt.cmtContent}"></th:block>
 						</td>
 						
 					</tr>
-					<tr th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter} and ${chkUpdate == cmt.cmtId}">
+					<tr sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter} and ${chkUpdate == cmt.cmtId}">
 						<td><input class="btn" type="submit" value="수정"></input></td>
 						<td><a th:href="@{'/board/getBoard?seq=' + ${board.seq} + '#comment'}"><button class="btn2" type="button">닫기</button></a></td>
 					</tr>
@@ -105,12 +105,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		</td>
 		<td class="dateBox" th:text="${#dates.format(cmt.cmtCreateDate, 'yy-MM-dd HH:mm:ss')}" th:align="center"></td>
 		<td>
-			<a th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" th:href="@{'/board/getBoard?seq=' + ${board.seq} + '&chkUpdate=' + ${cmt.cmtId} + '&cmtPage=' + ${currentPage} + '#comment'}">
+			<a sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.name} == ${cmt.cmtWriter}" th:href="@{'/board/getBoard?seq=' + ${board.seq} + '&chkUpdate=' + ${cmt.cmtId} + '&cmtPage=' + ${currentPage} + '#comment'}">
 				<button class="btn" type="button">수정</button>
 			</a>
 		</td>
 		<td>
-			<form th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}" th:action="@{/comment/deleteComment(cmtId=${cmt.cmtId})}" method="post">
+			<form sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}" th:action="@{/comment/deleteComment(cmtId=${cmt.cmtId})}" method="post">
 				<input type="hidden" name="_method" th:value="delete"/>
 				<input type="hidden" name=cmtId th:value="${cmt.cmtId}"/>
 				<button class="btn2" onclick="return confirm('댓글을 삭제하겠습니까?')">삭제</button>
@@ -136,12 +136,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<tr>
 		<th class="tagBox"width="50">작성자</th>
 		<th class="tagBox"width="400" align="center">내용</th>
-		<td rowspan="2" align="center">
+		<td sec:authorize="isAuthenticated()" rowspan="2" align="center">
 			<input class="btn" type="submit" value="댓글 등록">
+		</td>
+		<td sec:authorize="isAnonymous()" rowspan="2" align="center">
+			<button class="btn" type="button" onclick="return alert('로그인 후 이용해주세요.')">댓글 등록</button>
 		</td>
 	</tr>
 	<tr>
-		<td><span sec:authentication="principal.member.name"></span></td>
+		<td><span sec:authorize="isAuthenticated()"  sec:authentication="principal.member.name"></span></td>
 		<td><textarea name="cmtContent" cols="54" rows="4" maxlength="100"></textarea></td>
 	</tr>
 </table>

@@ -1,0 +1,31 @@
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+}
+
+.modal-content {
+   margin: auto;
+   padding:20px;
+   border-radius :10px;
+   background-color:#AAAADD;
+   border: thick double black;
+   width: 480px;
+   height: 360px;
+}
+
+
+img {
+	max-width: 300px;
+}
+
+.imgPre {
+	width: 300px;
+	height: 300px;
+	border: thick solid red;
+}

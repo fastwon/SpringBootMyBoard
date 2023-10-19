@@ -97,6 +97,7 @@
  }
  
  table table {
+ 	border : 2px inset #9999FF;
  	background-color: white;
  }
  
