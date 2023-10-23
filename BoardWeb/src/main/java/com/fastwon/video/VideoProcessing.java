@@ -5,16 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class VideoProcessing {
-    public static void main(String[] args) {
-        String inputPath = "D:/Exam.mp4";
-        String outputPath = "output4.mp4";
-
+    public static void trimVideo(String inputPath, String outputPath, int start, int duration) {
         try {
             // 현재 디렉토리 경로 얻기
             String currentDirectory = System.getProperty("user.dir");
 
             // FFmpeg 명령 생성 및 실행
-            String command = currentDirectory + "/src/main/resources/ffmpeg/bin/ffmpeg.exe -i " + inputPath + " -ss 3 -t 2 " + outputPath;
+            String command = currentDirectory + "/src/main/resources/ffmpeg/bin/ffmpeg.exe -i " + inputPath + " -ss " + start + " -t " + duration + " " + outputPath;
 
             ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
             processBuilder.redirectErrorStream(true);

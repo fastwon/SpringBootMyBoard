@@ -1,8 +1,12 @@
 package com.fastwon.board.service;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,7 @@ import com.fastwon.board.domain.QBoard;
 import com.fastwon.board.domain.Search;
 import com.fastwon.board.persistence.BoardRepository;
 import com.fastwon.board.persistence.CommentRepository;
+import com.fastwon.video.VideoProcessing;
 import com.google.cloud.storage.Bucket;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.cloud.StorageClient;
@@ -54,7 +59,6 @@ public class BoardServiceImpl implements BoardService {
 		
 		findBoard.setTitle(board.getTitle());
 		findBoard.setContent(board.getContent());
-		findBoard.setPhotoUrl(board.getPhotoUrl());
 		
 		boardRepo.save(findBoard);
 		
@@ -104,12 +108,28 @@ public class BoardServiceImpl implements BoardService {
 	private String firebaseBucket;
 	
 	@Override
-	public void uploadFiles(MultipartFile file, String nameFile) throws IOException, FirebaseAuthException {
-		Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+	public void uploadFiles(MultipartFile file, int vStart, int vLength, String nameFile) throws IOException, FirebaseAuthException {
 		
-		InputStream content = new ByteArrayInputStream(file.getBytes());
-		
-		bucket.create(nameFile.toString(), content, file.getContentType());
+	    Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+
+	    // 1. 임시 디렉토리에 원본 파일 저장하기
+	    Path tempDirWithPrefix = Files.createTempDirectory("");
+	    File tempFile = new File(tempDirWithPrefix.toFile(), nameFile);
+	    file.transferTo(tempFile);
+
+	    // 2. 원본 파일 편집하여 새 파일 생성하기
+	    String outputPath = tempDirWithPrefix.toString() + "/output.mp4";
+	    VideoProcessing.trimVideo(tempFile.getAbsolutePath(), outputPath, vStart, vLength);
+
+	    // 3. 새 파일을 Firebase Storage에 업로드하기 
+		FileInputStream contentStream = new FileInputStream(outputPath);
+		bucket.create(nameFile.toString(), contentStream , file.getContentType());
+		contentStream.close();
+
+		// 임시파일 삭제 
+		tempFile.delete();
+		new File(outputPath).delete();
+
 	}
 
 	/*

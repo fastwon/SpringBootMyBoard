@@ -7,7 +7,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<script type="text/javascript" src="/js/FastValidChecker.js"></script>
 	<script type="text/javascript" src="/js/InsertBoardCheck.js"></script>
 	<script type="text/javascript">
-        function readURL(input) {
+        /* function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function(e) {
@@ -15,9 +15,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                 }
                 reader.readAsDataURL(input.files[0]);
             }
-        }
+        } */
+        
     </script>
     <link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
+    <!-- <link rel="stylesheet" type="text/css" href="/css/modal.css"> -->
 </head>
 
 <body th:align="center">
@@ -42,12 +44,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		<td><span sec:authentication="principal.member.name"></span></td>
 	</tr>
 	<tr> <!-- 새로운 행을 추가해 파일을 선택할 수 있는 입력 요소를 만듭니다. -->
-        <td class="tagBox"th:text="사진첨부"></td>
-        <td><input type="file" name="photo" onchange='readURL(this);'></td>
-    </tr>
-    <tr> 
-        <td class="tagBox">미리보기</td>
-        <td><img id='imagePreview' th:src="@{${board.photoUrl}}" alt='your image' /></td> 
+        <td class="tagBox"th:text="미디어"></td>
+        <td>
+        <video controls autoplay>
+     		<source th:src="@{${board.photoUrl}}" type="video/mp4">
+    	</video>
+    </td> 
     </tr>
 	<tr>
 		<td class="tagBox"th:text="내용">
@@ -55,10 +57,31 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</tr>
 	<tr>
 		<td colspan="2" align="center">
-			<input class="btn" type="submit" value="게시글 수정">
+			<input class="btn" type="submit" value="게시글 수정"> <a th:href="@{/board/getBoard(seq=${board.seq})}"><button type="button">취소</button></a>
 		</td>
 	</tr>
 </table>
+	<!-- <div id="myModal" class="modal">
+	  <div class="modal-content">
+	    <table th:align="center" th:cellpadding="0" th:cellspacing="0">
+	
+			<tr> 새로운 행을 추가해 파일을 선택할 수 있는 입력 요소를 만듭니다.
+		        <td class="tagBox">사진첨부</td>
+		        <td><input type="file" name="photo" onchange='readURL(this);'></td>
+		    </tr>
+		    <tr> 
+		        <td class="tagBox">미리보기</td>
+		        <td class="imgPre"><img id='imagePreview' src='#' alt='your image' /></td> 
+		    </tr>
+		    <tr>
+		    	<td>
+					<button id="closeModal" type="button">확인</button><button id="undoModal" type="button">취소</button>
+		    	</td>
+		    </tr>
+		</table>
+	  </div>
+	</div>
+	<script type="text/javascript" src="/js/modal.js"></script> -->
 </form>
 <a th:href="@{/board/getBoardList}">글목록</a>
 

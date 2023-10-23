@@ -107,18 +107,18 @@ public class BoardController {
 	}
 	
 	@PostMapping("/insertBoard")
-	public String insertBoard(Board board, @RequestParam("photo") MultipartFile photo, @AuthenticationPrincipal SecurityUser principal, RedirectAttributes redirect) {
+	public String insertBoard(Board board, @RequestParam("media") MultipartFile media, @RequestParam("vStart") int vStart, @RequestParam("vLength") int vLength, @AuthenticationPrincipal SecurityUser principal, RedirectAttributes redirect) {
 	    board.setMember(principal.getMember());
 	    
 	    // 사진 파일 처리 로직
-	    if (!photo.isEmpty()) { // 파일이 비어있지 않다면 처리
+	    if (!media.isEmpty()) { // 파일이 비어있지 않다면 처리
 	        // 원하는 경로에 파일을 저장
-	        String fileName = StringUtils.cleanPath(Objects.requireNonNull(photo.getOriginalFilename())) + System.currentTimeMillis();
+	        String fileName = StringUtils.cleanPath(Objects.requireNonNull(media.getOriginalFilename())) + System.currentTimeMillis();
 	        
 	        try {
 	            // Firebase Storage에 이미지 업로드하고 URL 받아오기
 	            String imageUrl = "https://firebasestorage.googleapis.com/v0/b/fastwonboard.appspot.com/o/" + fileName + "?alt=media";
-        		boardService.uploadFiles(photo, fileName);
+        		boardService.uploadFiles(media, vStart, vLength, fileName);
 	            
 	            // board 객체에 이미지 URL을 저장하는 필드를 추가
 	            board.setPhotoUrl(imageUrl);
@@ -150,50 +150,47 @@ public class BoardController {
 	}
 	
 	@PutMapping("/updateBoard")
-	public String updateBoard(Board board, @RequestParam("photo") MultipartFile photo, RedirectAttributes redirect) {
-		
-		// 사진 파일 처리 로직
-        if (!photo.isEmpty()) { // 파일이 비어있지 않다면 처리
-            // 원하는 경로에 파일을 저장
-            String fileName = StringUtils.cleanPath(Objects.requireNonNull(photo.getOriginalFilename())) + System.currentTimeMillis();
-            // 경로 확인 및 생성
-//            Path path = Paths.get("src/main/resources/static/uploads/" + fileName);
-            try {
-            	String imageUrl = "https://firebasestorage.googleapis.com/v0/b/fastwonboard.appspot.com/o/" + fileName + "?alt=media";
-        		boardService.uploadFiles(photo, fileName);         	          	
-        		
-        		//board 객체에 이미지 URL을 저장하는 필드를 추가
-        		board.setPhotoUrl(imageUrl);
-            } catch (IOException | FirebaseAuthException e) {
-                // 파일 저장 중 오류 처리
-                e.printStackTrace();
-            }
-
-        } else {
-        	Board findBoard = boardService.getUpdateBoard(board);
-        	board.setPhotoUrl(findBoard.getPhotoUrl());
-        }
+	public String updateBoard(Board board, RedirectAttributes redirect) {
 		
 		boardService.updateBoard(board);
-		
-		System.out.println(board.getCategory());
-		System.out.println("--------------------------------------");
-		System.out.println("--------------------------------------");
-		System.out.println("--------------------------------------");
-		System.out.println("--------------------------------------");
-		System.out.println("--------------------------------------");
-		System.out.println("--------------------------------------");
-		System.out.println("--------------------------------------");
-		System.out.println("--------------------------------------");
 		
 		redirect.addAttribute("category", board.getCategory());
 		
 		return "redirect:getBoardList";
 	}
 	
+	/*
+	 * @PutMapping("/updateBoard") public String updateBoard(Board
+	 * board, @RequestParam("media") MultipartFile photo, RedirectAttributes
+	 * redirect) {
+	 * 
+	 * // 사진 파일 처리 로직 if (!photo.isEmpty()) { // 파일이 비어있지 않다면 처리 // 원하는 경로에 파일을 저장
+	 * String fileName =
+	 * StringUtils.cleanPath(Objects.requireNonNull(photo.getOriginalFilename())) +
+	 * System.currentTimeMillis(); // 경로 확인 및 생성 // Path path =
+	 * Paths.get("src/main/resources/static/uploads/" + fileName); try {
+	 * boardService.uploadFiles(photo, 0, 0, fileName); String imageUrl =
+	 * "https://firebasestorage.googleapis.com/v0/b/fastwonboard.appspot.com/o/" +
+	 * fileName + "?alt=media";
+	 * 
+	 * //board 객체에 이미지 URL을 저장하는 필드를 추가 board.setPhotoUrl(imageUrl); } catch
+	 * (IOException | FirebaseAuthException e) { // 파일 저장 중 오류 처리
+	 * e.printStackTrace(); }
+	 * 
+	 * } else { Board findBoard = boardService.getUpdateBoard(board);
+	 * board.setPhotoUrl(findBoard.getPhotoUrl()); }
+	 * 
+	 * boardService.updateBoard(board);
+	 * 
+	 * redirect.addAttribute("category", board.getCategory());
+	 * 
+	 * return "redirect:getBoardList"; }
+	 */
+	
 	@DeleteMapping("/deleteBoard")
 	public String deleteBoard(Board board) {
 		boardService.deleteBoard(board);
 		return "redirect:getBoardList";
 	}
+	
 }

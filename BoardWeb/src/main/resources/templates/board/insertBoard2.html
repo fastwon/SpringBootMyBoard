@@ -78,19 +78,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</tr>
 	<tr> <!-- 새로운 행을 추가해 파일을 선택할 수 있는 입력 요소를 만듭니다. -->
         <td class="tagBox"th:text="사진첨부"></td>
-        <td><input type="file" name="media" onchange='readURL(this);'></td>
+        <td><button id="openModal" type="button">사진</button></td>
     </tr>
     <tr> 
         <td class="tagBox">미리보기</td>
-        <td><img th:if="${category.name()} != GAME" id='imagePreview' src='#' alt='your image' /><video id="videoPreview" controls></video></td> 
-    </tr>
-    <tr>
-    	<td>시작</td>
-    	<td><input type="text" name="vStart"/>초</td>
-    </tr>
-    <tr>
-    	<td>길이</td>
-    	<td><input type="text" name="vLength"/>초</td>
+        <td><img th:if="${category.name()} != GAME" id='imagePreview2' src='#' alt='your image' /><video id="videoPreview2" controls></video></td> 
     </tr>
 	<tr>
 		<td class="tagBox" th:text="내용">
@@ -103,14 +95,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</tr>
 </table>
 
-</form>
-    <!-- <div id="myModal" class="modal">
+    <div id="myModal" class="modal">
 	  <div class="modal-content">
 	    <table th:align="center" th:cellpadding="0" th:cellspacing="0">
 	
-			<tr> 새로운 행을 추가해 파일을 선택할 수 있는 입력 요소를 만듭니다.
+			<tr> <!-- 새로운 행을 추가해 파일을 선택할 수 있는 입력 요소를 만듭니다. -->
 		        <td class="tagBox">사진첨부</td>
-		        <td><input type="file" name="media" onchange='readURL(this);'></td>
+		        <td><input type="file" name="photo" onchange='readURL(this);'></td>
 		    </tr>
 		    <tr> 
 		        <td class="tagBox">미리보기</td>
@@ -124,9 +115,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		</table>
 	  </div>
 	</div>
-    <script type="text/javascript" src="/js/modal.js"></script> -->
+</form>
 <a th:href="@{/board/getBoardList(category=${category})}">글목록</a>
 
     <div th:replace="/entire/foot :: foot"></div>
+    <script type="text/javascript" src="/js/modal.js"></script>
 </body>
 </html>

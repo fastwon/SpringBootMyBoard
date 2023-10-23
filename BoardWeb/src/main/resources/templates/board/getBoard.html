@@ -41,7 +41,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		</tr>
 	</table>
 			
-	<img th:src="@{${board.photoUrl}}">
+	<img th:if="${board.photoUrl != null && !board.photoUrl.contains('mp4')}" th:src="@{${board.photoUrl}}">
+	
+	<video th:if="${board.photoUrl != null && board.photoUrl.contains('mp4')}" controls autoplay>
+      <source th:src="@{${board.photoUrl}}" type="video/mp4">
+    </video>
 		
 	<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width=500>
 		<tr>
