@@ -111,6 +111,14 @@ public class BoardServiceImpl implements BoardService {
 	public void uploadFiles(MultipartFile file, int vStart, int vLength, String nameFile) throws IOException, FirebaseAuthException {
 		
 	    Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+	    
+	    if(file.getContentType().contains("image")) {
+	    	InputStream content = new ByteArrayInputStream(file.getBytes());
+			
+			bucket.create(nameFile.toString(), content, file.getContentType());
+			
+			return;
+	    }
 
 	    // 1. 임시 디렉토리에 원본 파일 저장하기
 	    Path tempDirWithPrefix = Files.createTempDirectory("");

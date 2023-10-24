@@ -8,6 +8,7 @@ var span = document.getElementById("closeModal");
 
 var undo = document.getElementById("undoModal");
 
+
 // When the user clicks on the button, open the modal 
 btn.onclick = function() {
     modal.style.display = "block";

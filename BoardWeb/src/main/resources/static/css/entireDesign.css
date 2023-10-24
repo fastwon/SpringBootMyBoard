@@ -127,6 +127,22 @@
  }
  
  video {
- 	max-width: 500px;
- 	max-height: 500px;
+ 	max-width: 448px;
+ 	max-height: 252px;
+ }
+ 
+ .boardImg {
+ 	max-width: 448px;
+ 	max-height: 252px;
+ }
+ 
+ #imagePreview{
+ 	display: none;
+ }
+ #videoPreview{
+ 	display: none;
+ }
+ 
+ .videoLen {
+ 	display: none;
  }

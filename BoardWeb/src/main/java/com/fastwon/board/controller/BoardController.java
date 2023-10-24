@@ -102,13 +102,20 @@ public class BoardController {
 	
 	@GetMapping("/insertBoard")
 	public String insertBoardView(Model model, @RequestParam(value = "category", required = false) Category category) {
-		model.addAttribute("category", category);
+		if(category != null) {
+			model.addAttribute("category", category.name());
+		} else {
+			model.addAttribute("category", category);
+			
+		}
+		
 		return "board/insertBoard";
 	}
 	
 	@PostMapping("/insertBoard")
-	public String insertBoard(Board board, @RequestParam("media") MultipartFile media, @RequestParam("vStart") int vStart, @RequestParam("vLength") int vLength, @AuthenticationPrincipal SecurityUser principal, RedirectAttributes redirect) {
+	public String insertBoard(Board board, @RequestParam("media") MultipartFile media, @RequestParam("youtube") String youtube, @RequestParam("vStart") int vStart, @RequestParam("vLength") int vLength, @AuthenticationPrincipal SecurityUser principal, RedirectAttributes redirect) {
 	    board.setMember(principal.getMember());
+	    
 	    
 	    // 사진 파일 처리 로직
 	    if (!media.isEmpty()) { // 파일이 비어있지 않다면 처리
@@ -127,6 +134,16 @@ public class BoardController {
 	            // 파일 저장 중 오류 처리
 	            e.printStackTrace();
 	        }
+	    }
+	    
+	    if(!youtube.equals("blank")) {
+	    	String videoId = youtube.split("v=")[1];
+	    	int ampersand = videoId.indexOf('&');
+	    	
+	    	if(ampersand != -1) {
+	    		videoId = videoId.substring(0, ampersand);
+	    	}
+	    	board.setPhotoUrl("https://www.youtube.com/embed/" + videoId); 
 	    }
 	    
 	    boardService.insertBoard(board);

@@ -15,6 +15,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 			max-width: 500;
 		}
 	</style>
+	
 	<link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
 </head>
 
@@ -41,12 +42,14 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		</tr>
 	</table>
 			
-	<img th:if="${board.photoUrl != null && !board.photoUrl.contains('mp4')}" th:src="@{${board.photoUrl}}">
+	<img th:if="${board.photoUrl != null && !board.photoUrl.contains('.mp4') && !board.photoUrl.contains('youtube.com')}" th:src="@{${board.photoUrl}}">
 	
-	<video th:if="${board.photoUrl != null && board.photoUrl.contains('mp4')}" controls autoplay>
+	<video th:if="${board.photoUrl != null && board.photoUrl.contains('.mp4')}" controls autoplay>
       <source th:src="@{${board.photoUrl}}" type="video/mp4">
     </video>
-		
+	
+	<iframe th:if="${board.photoUrl != null && board.photoUrl.contains('youtube.com')}" width='448' height='252' th:src="@{${board.photoUrl}}" frameborder='0' allowfullscreen></iframe>
+	
 	<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width=500>
 		<tr>
 			<td class="tagBox"th:text="내용" width="80">

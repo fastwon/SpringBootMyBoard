@@ -7,54 +7,81 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<script type="text/javascript" src="/js/FastValidChecker.js"></script>
 	<script type="text/javascript" src="/js/InsertBoardCheck.js"></script>
 	<script type="text/javascript">
-        /* function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('imagePreview').src = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        } */
         function readURL(input) {
+
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 var fileType = input.files[0].type; // 입력된 파일의 유형을 얻습니다.
-                
+
                 reader.onload = function(e) {
                     if (fileType.startsWith('image')) { // 이미지일 경우 img 태그로 미리보기
-                        document.getElementById('imagePreview').src = e.target.result;
+			            var imagePreview = document.getElementById('imagePreview');
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';  // 이미지 미리보기를 표시합니다.
+                        if(document.getElementById('videoPreview') != null) {
+    		            	var videoPreview = document.getElementById('videoPreview');
+                            videoPreview.style.display = 'none'; 
+    		            }
+                        
+                        
                     } else if (fileType.startsWith('video')) { // 동영상일 경우 video 태그로 미리보기
+			            var videoPreview = document.getElementById('videoPreview');
+			            var videoLen = document.getElementsByClassName('videoLen');
                         var source = document.createElement('source');
 
                         source.src = e.target.result;
                         source.type = fileType;
 
-                        var previewVideo1= document.getElementById("videoPreview");
-                        previewVideo1.innerHTML= "";
+                        videoPreview.innerHTML= "";
                         
-                        previewVideo1.appendChild(source);
-        				
-        				previewVideo1.load(); 
+                        videoPreview.appendChild(source);
+                    	videoPreview.load();
+                    	
+    					videoPreview.style.display='block'; 	
+    					videoLen[0].style.display = 'table-row';
+    		            videoLen[1].style.display = 'table-row';
+    		            
+    		            if(document.getElementById('imagePreview') != null) {
+    		            	var imagePreview = document.getElementById('imagePreview');
+                            imagePreview.style.display = 'none'; 
+    		            }
+
                     }
                 }
 
                 reader.readAsDataURL(input.files[0]);
             } else {
-            	if(document.getElementById('imagePreview') != null) {
-	            	document.getElementById('imagePreview').src = "#";
-            	}
+           		var imagePreview = document.getElementById('imagePreview');
+               	
+           		imagePreview.src='#';
+               	imagePreview.style.display='none';	// 이미지 미리보기를 숨깁니다.
+                
+               	var videoPreview = document.getElementById('videoPreview');
+                var videoLen = document.getElementsByClassName('videoLen');
             	
-            	var previewVideo1= document.getElementById("videoPreview");
-                previewVideo1.innerHTML= "";
-                previewVideo1.load();
-            	
+            	videoPreview.innerHTML='';
+            	videoPreview.load();
+    			videoPreview.style.display='none'; 	// 비디오 미리보기를 숨깁니다.
+    			videoLen[0].style.display = 'none';
+                videoLen[1].style.display = 'none';
             }
         }
 
     </script>
+    <script>
+		function displayVideo() {
+		  var url = document.getElementById('urlInput').value;
+		  var videoId = url.split('v=')[1];
+		  var ampersandPosition = videoId.indexOf('&');
+		  if(ampersandPosition != -1) {
+		    videoId = videoId.substring(0, ampersandPosition);
+		  }
+		
+		  document.getElementById('videoContainer').innerHTML = 
+		    `<iframe width='448' height='252' src='https://www.youtube.com/embed/${videoId}' frameborder='0' allowfullscreen></iframe>`;
+		}
+	</script>
     <link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
-	<link rel="stylesheet" type="text/css" href="/css/modal.css">
 </head>
 
 <body th:align="center">
@@ -66,65 +93,52 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <h1>게시글 등록</h1>
 <form name="isbForm" th:action="@{/board/insertBoard}" method="post" enctype="multipart/form-data" onsubmit="return checkValid()">
 	<input type="hidden" name="category" th:value="${category}" />
-<table th:align="center" th:cellpadding="0" th:cellspacing="0">
-	
-	<tr>
-		<td class="tagBox"th:text="제목" width="80"></td>
-		<td><input name="title" type="text" size="50" placeholder="두 글자 이상" maxlength="50"></td>
-	</tr>
-	<tr>
-		<td class="tagBox"th:text="작성자"></td>
-		<td><span sec:authentication="principal.member.name"></span></td>
-	</tr>
-	<tr> <!-- 새로운 행을 추가해 파일을 선택할 수 있는 입력 요소를 만듭니다. -->
-        <td class="tagBox"th:text="사진첨부"></td>
-        <td><input type="file" name="media" onchange='readURL(this);'></td>
-    </tr>
-    <tr> 
-        <td class="tagBox">미리보기</td>
-        <td><img th:if="${category.name()} != GAME" id='imagePreview' src='#' alt='your image' /><video id="videoPreview" controls></video></td> 
-    </tr>
-    <tr>
-    	<td>시작</td>
-    	<td><input type="text" name="vStart"/>초</td>
-    </tr>
-    <tr>
-    	<td>길이</td>
-    	<td><input type="text" name="vLength"/>초</td>
-    </tr>
-	<tr>
-		<td class="tagBox" th:text="내용">
-		<td><textarea name="content" cols="50" rows="10" maxlength="255"></textarea></td>
-	</tr>
-	<tr>
-		<td colspan="2" align="center">
-			<input class="btn" type="submit" value="게시글 등록">
-		</td>
-	</tr>
-</table>
+	<input th:if = "${category} != MUSIC" type="hidden" name="youtube" th:value="blank"/>
+	<input th:if="${category} == MUSIC" type="file" name="media" style="display: none;"/>
+	<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width = "500">
+		
+		<tr>
+			<td class="tagBox"th:text="제목" width="80"></td>
+			<td><input name="title" type="text" size="50" placeholder="두 글자 이상" maxlength="50"></td>
+		</tr>
+		<tr>
+			<td class="tagBox"th:text="작성자"></td>
+			<td><span sec:authentication="principal.member.name"></span></td>
+		</tr>
+		<tr> 
+	        <td class="tagBox"th:text="미디어첨부"></td>
+	        <td th:if = "${category} == FOOTBALL"><input type="file" name="media" accept="image/*" onchange='readURL(this);'></td>
+	        <td th:if = "${category == 'GAME'}"><input type="file" name="media" accept="video/mp4" onchange='readURL(this);'></td>
+	        <td th:if = "${category} == null"><input type="file" name="media" onchange='readURL(this);'></td>
+	        <td th:if = "${category} == MUSIC"><input type="text" name="youtube" id="urlInput" placeholder="Enter YouTube URL"><button type="button" onclick="displayVideo()">Display Video</button></td>
+	    </tr>
+	    <tr th:if = "${category} == MUSIC">
+	    	<td colspan="2" align="center"><div id="videoContainer"></div></td>
+	    </tr>
+	    
+	    <tr th:if = "${category} != MUSIC"> 
+	        <td colspan="2" align="center"><img class="boardImg" id='imagePreview' src='#' alt='your image' /><video id="videoPreview" controls></video></td>
+	    </tr>
+	    <tr class="videoLen">
+	    	<td>시작</td>
+	    	<td><input type="text" name="vStart" th:value="-1"/>초</td>
+	    </tr>
+	    <tr class="videoLen">
+	    	<td>길이</td>
+	    	<td><input type="text" name="vLength" th:value="-1"/>초</td>
+	    </tr>
+		<tr>
+			<td class="tagBox" th:text="내용">
+			<td><textarea name="content" cols="50" rows="10" maxlength="255"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<input class="btn" type="submit" value="게시글 등록">
+			</td>
+		</tr>
+	</table>
 
 </form>
-    <!-- <div id="myModal" class="modal">
-	  <div class="modal-content">
-	    <table th:align="center" th:cellpadding="0" th:cellspacing="0">
-	
-			<tr> 새로운 행을 추가해 파일을 선택할 수 있는 입력 요소를 만듭니다.
-		        <td class="tagBox">사진첨부</td>
-		        <td><input type="file" name="media" onchange='readURL(this);'></td>
-		    </tr>
-		    <tr> 
-		        <td class="tagBox">미리보기</td>
-		        <td class="imgPre"><img th:if="${category.name()} != GAME" id='imagePreview' src='#' alt='your image' /><video id="videoPreview" controls></video></td> 
-		    </tr>
-		    <tr>
-		    	<td colspan="2">
-					<button id="closeModal" type="button">확인</button><button id="undoModal" type="button">취소</button>
-		    	</td>
-		    </tr>
-		</table>
-	  </div>
-	</div>
-    <script type="text/javascript" src="/js/modal.js"></script> -->
 <a th:href="@{/board/getBoardList(category=${category})}">글목록</a>
 
     <div th:replace="/entire/foot :: foot"></div>

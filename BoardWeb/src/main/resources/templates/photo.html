@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Fastwon</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="/css/modal.css">
+	<script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</head>
+<body>
+	<!-- 버튼 -->
+	<button id="openModal">사진</button>
+	<br>
+	<img id='imagePreview2' src='#' alt='your image' />
+	
+	
+	<!-- 모달 창 -->
+	<div id="myModal" class="modal">
+	  <div class="modal-content">
+	    <table th:align="center" th:cellpadding="0" th:cellspacing="0">
+	
+			<tr> <!-- 새로운 행을 추가해 파일을 선택할 수 있는 입력 요소를 만듭니다. -->
+		        <td class="tagBox"th:text="사진첨부"></td>
+		        <td><input type="file" name="photo" onchange='readURL(this);'></td>
+		    </tr>
+		    <tr> 
+		        <td class="tagBox">미리보기</td>
+		        <td><img id='imagePreview' src='#' alt='your image' /></td> 
+		    </tr>
+		</table>
+		<button id="closeModal">확인</button><button id="undoModal">취소</button>
+	  </div>
+	</div>
+
+	<script type="text/javascript" src="/js/modal.js"></script>
+
+	
+</body>
+</html>

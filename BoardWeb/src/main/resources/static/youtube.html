@@ -1,0 +1,32 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Fastwon</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script type="text/javascript">
+    </script>
+</head>
+<body>
+
+<h2>YouTube Video</h2>
+
+<input type="text" id="urlInput" placeholder="Enter YouTube URL">
+<button onclick="displayVideo()">Display Video</button>
+
+<div id="videoContainer"></div>
+
+<script>
+function displayVideo() {
+  var url = document.getElementById('urlInput').value;
+  var videoId = url.split('v=')[1];
+  var ampersandPosition = videoId.indexOf('&');
+  if(ampersandPosition != -1) {
+    videoId = videoId.substring(0, ampersandPosition);
+  }
+
+  document.getElementById('videoContainer').innerHTML = 
+    `<iframe width='560' height='315' src='https://www.youtube.com/embed/${videoId}' frameborder='0' allowfullscreen></iframe>`;
+}
+</script>
+
+</body>
+</html>
