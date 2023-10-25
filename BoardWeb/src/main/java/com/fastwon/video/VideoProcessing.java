@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class VideoProcessing {
-    public static void trimVideo(String inputPath, String outputPath, int start, int duration) {
+    public static void trimVideo(String inputPath, String outputPath, double start, double duration) {
         try {
             // 현재 디렉토리 경로 얻기
             String currentDirectory = System.getProperty("user.dir");

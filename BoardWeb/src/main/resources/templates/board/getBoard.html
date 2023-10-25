@@ -41,6 +41,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 			<td th:text="${board.member.name}"></td>
 		</tr>
 	</table>
+	
+	<br>
 			
 	<img th:if="${board.photoUrl != null && !board.photoUrl.contains('.mp4') && !board.photoUrl.contains('youtube.com')}" th:src="@{${board.photoUrl}}">
 	
@@ -49,6 +51,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     </video>
 	
 	<iframe th:if="${board.photoUrl != null && board.photoUrl.contains('youtube.com')}" width='448' height='252' th:src="@{${board.photoUrl}}" frameborder='0' allowfullscreen></iframe>
+	
+	<br>
+	<br>
 	
 	<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width=500>
 		<tr>
@@ -72,6 +77,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <form sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.name == board.member.name} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}"  th:action="@{/board/deleteBoard}" method="post">
 	<input type="hidden" name="_method" th:value="delete"/>
 	<input type="hidden" name="seq" th:value="${board.seq}"/>
+	<input type="hidden" name="category" th:value="${board.category}"/>
 	<button class="btn2" onclick="return confirm('글을 삭제하겠습니까?')">글삭제</button>
 </form>
 <br>
@@ -119,7 +125,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		<td>
 			<form sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.name == cmt.cmtWriter} or ${#authentication.principal.member.role.name() == 'ROLE_ADMIN'}" th:action="@{/comment/deleteComment(cmtId=${cmt.cmtId})}" method="post">
 				<input type="hidden" name="_method" th:value="delete"/>
-				<input type="hidden" name=cmtId th:value="${cmt.cmtId}"/>
+				<input type="hidden" name="cmtId" th:value="${cmt.cmtId}"/>
 				<button class="btn2" onclick="return confirm('댓글을 삭제하겠습니까?')">삭제</button>
 			</form>
 		</td>

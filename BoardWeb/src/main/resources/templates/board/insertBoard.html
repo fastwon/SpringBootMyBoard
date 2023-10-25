@@ -10,14 +10,25 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
         function readURL(input) {
 
             if (input.files && input.files[0]) {
+            	// 파일크기 20MB 제한
+            	var file = input.files[0];
+				var fileSize = file.size / 1024 / 1024;
+				
+				if(fileSize > 20) {
+					alert('파일크기가 20MB를 초과하였습니다.');
+					input.value = '';
+					return;
+				}
+            	
+            	
                 var reader = new FileReader();
-                var fileType = input.files[0].type; // 입력된 파일의 유형을 얻습니다.
+                var fileType = input.files[0].type; 
 
                 reader.onload = function(e) {
                     if (fileType.startsWith('image')) { // 이미지일 경우 img 태그로 미리보기
 			            var imagePreview = document.getElementById('imagePreview');
                         imagePreview.src = e.target.result;
-                        imagePreview.style.display = 'block';  // 이미지 미리보기를 표시합니다.
+                        imagePreview.style.display = 'block';  
                         if(document.getElementById('videoPreview') != null) {
     		            	var videoPreview = document.getElementById('videoPreview');
                             videoPreview.style.display = 'none'; 
@@ -41,6 +52,18 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     					videoLen[0].style.display = 'table-row';
     		            videoLen[1].style.display = 'table-row';
     		            
+    		            videoPreview.onloadedmetadata = function() {
+    		            	var inputTag = videoLen[0].getElementsByTagName('input')[0];
+    		            	inputTag.setAttribute('max', Math.max(Math.floor(this.duration * 10) / 10 - 2, 0));
+    		            	
+    		            	var inputTag2 = videoLen[1].getElementsByTagName('input')[0];
+    		            	inputTag2.value = Math.floor(this.duration * 10) / 10;
+    		            	inputTag2.setAttribute('max', Math.floor(this.duration * 10) / 10);
+
+    		            	var inputTag3 = videoLen[2].getElementsByTagName('input')[0];
+    		            	inputTag3.value = Math.floor(this.duration * 10) / 10;
+   		            	};
+    		            
     		            if(document.getElementById('imagePreview') != null) {
     		            	var imagePreview = document.getElementById('imagePreview');
                             imagePreview.style.display = 'none'; 
@@ -50,18 +73,18 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                 }
 
                 reader.readAsDataURL(input.files[0]);
-            } else {
+            } else {	// 선택된파일이 없을경우 미리보기 제거
            		var imagePreview = document.getElementById('imagePreview');
                	
            		imagePreview.src='#';
-               	imagePreview.style.display='none';	// 이미지 미리보기를 숨깁니다.
+               	imagePreview.style.display='none';	
                 
                	var videoPreview = document.getElementById('videoPreview');
                 var videoLen = document.getElementsByClassName('videoLen');
             	
             	videoPreview.innerHTML='';
             	videoPreview.load();
-    			videoPreview.style.display='none'; 	// 비디오 미리보기를 숨깁니다.
+    			videoPreview.style.display='none'; 	
     			videoLen[0].style.display = 'none';
                 videoLen[1].style.display = 'none';
             }
@@ -81,6 +104,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		    `<iframe width='448' height='252' src='https://www.youtube.com/embed/${videoId}' frameborder='0' allowfullscreen></iframe>`;
 		}
 	</script>
+	
     <link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
 </head>
 
@@ -121,11 +145,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	    </tr>
 	    <tr class="videoLen">
 	    	<td>시작</td>
-	    	<td><input type="text" name="vStart" th:value="-1"/>초</td>
+	    	<td><input type="number" name="vStart" th:value="0" step="0.1" min="0"/>초</td>
+	    </tr>
+	    <tr class="videoLen">
+	    	<td>끝</td>
+	    	<td><input type="number" name="vEnd" th:value="2" step="0.1"  min="2"/>초</td>
 	    </tr>
 	    <tr class="videoLen">
 	    	<td>길이</td>
-	    	<td><input type="text" name="vLength" th:value="-1"/>초</td>
+	    	<td><input type="text" name="duration" th:value="2"/>초</td>
 	    </tr>
 		<tr>
 			<td class="tagBox" th:text="내용">
