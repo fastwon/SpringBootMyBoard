@@ -27,7 +27,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<input type="hidden" name="category" th:value="${category}"/>
 <table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width="700">
 	<tr>
-		<td align="right">
+		<td th:align="right">
 			<select name="searchCondition" th:value="${gsc}">
 				<option value="TITLE" th:selected="${gsc == 'TITLE'}">제목</option>
 				<option value="CONTENT" th:selected="${gsc == 'CONTENT'}">내용</option>
@@ -57,7 +57,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<td>
 		<a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a>
 		<img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18">
-		<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'">
+		<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'"/>
 	</td>
 	<td th:text="${board.member.name}" th:align="center">
 	<td class="dateBox" th:text="${#dates.format(board.createDate, 'yyyy-MM-dd HH:mm')}" th:align="center">

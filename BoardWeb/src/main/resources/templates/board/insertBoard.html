@@ -104,7 +104,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		    `<iframe width='448' height='252' src='https://www.youtube.com/embed/${videoId}' frameborder='0' allowfullscreen></iframe>`;
 		}
 	</script>
-	
+
+
     <link rel="stylesheet" type="text/css" href="/css/entireDesign.css">
 </head>
 
@@ -120,7 +121,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<input th:if = "${category} != MUSIC" type="hidden" name="youtube" th:value="blank"/>
 	<input th:if="${category} == MUSIC" type="file" name="media" style="display: none;"/>
 	<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width = "500">
-		
+
 		<tr>
 			<td class="tagBox"th:text="제목" width="80"></td>
 			<td><input name="title" type="text" size="50" placeholder="두 글자 이상" maxlength="50"></td>
@@ -129,7 +130,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 			<td class="tagBox"th:text="작성자"></td>
 			<td><span sec:authentication="principal.member.name"></span></td>
 		</tr>
-		<tr> 
+		<tr>
 	        <td class="tagBox"th:text="미디어첨부"></td>
 	        <td th:if = "${category} == FOOTBALL"><input type="file" name="media" accept="image/*" onchange='readURL(this);'></td>
 	        <td th:if = "${category == 'GAME'}"><input type="file" name="media" accept="video/mp4" onchange='readURL(this);'></td>
@@ -137,11 +138,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	        <td th:if = "${category} == MUSIC"><input type="text" name="youtube" id="urlInput" placeholder="Enter YouTube URL"><button type="button" onclick="displayVideo()">Display Video</button></td>
 	    </tr>
 	    <tr th:if = "${category} == MUSIC">
-	    	<td colspan="2" align="center"><div id="videoContainer"></div></td>
+	    	<td colspan="2" th:align="center"><div id="videoContainer"></div></td>
 	    </tr>
-	    
-	    <tr th:if = "${category} != MUSIC"> 
-	        <td colspan="2" align="center"><img class="boardImg" id='imagePreview' src='#' alt='your image' /><video id="videoPreview" controls></video></td>
+
+	    <tr th:if = "${category} != MUSIC">
+	        <td colspan="2" th:align="center"><img class="boardImg" id='imagePreview' src='#' alt='your image' /><video id="videoPreview" controls></video></td>
 	    </tr>
 	    <tr class="videoLen">
 	    	<td>시작</td>
@@ -167,6 +168,19 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</table>
 
 </form>
+	<script>
+		var inputEnd = document.querySelector('input[name="vEnd"]');
+		var inputStart = document.querySelector('input[name="vStart"]');
+		var videoPlayer = document.getElementById('videoPreview');
+
+		inputStart.addEventListener('change', function() {
+			videoPlayer.currentTime = inputStart.value;
+		});
+
+		inputEnd.addEventListener('change', function() {
+			videoPlayer.currentTime = inputEnd.value;
+		});
+	</script>
 <a th:href="@{/board/getBoardList(category=${category})}">글목록</a>
 
     <div th:replace="/entire/foot :: foot"></div>
