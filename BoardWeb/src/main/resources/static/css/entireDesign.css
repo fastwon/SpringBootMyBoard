@@ -147,3 +147,7 @@
  .videoLen {
  	display: none;
  }
+
+ .boardTitle {
+	 text-overflow: ellipsis;
+ }
