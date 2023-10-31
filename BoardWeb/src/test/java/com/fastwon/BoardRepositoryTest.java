@@ -51,17 +51,17 @@ public class BoardRepositoryTest {
 //			boardRepo.save(board);
 //		}
 		
-		Member member2 = memberRepo.findById("member").get();
-		
-		System.out.println(member2.getName());
-
-		for (int i=26; i<= 100; i++) {
-			Board board = new Board();
-			board.setMember(member2);
-			board.setTitle(member2.getName() + "가 등록한 게시글 " + i);
-			board.setContent(member2.getName() + "가 등록한 게시글 내용 " + i);
-			boardRepo.save(board);
-		}
+//		Member member2 = memberRepo.findById("member").get();
+//
+//		System.out.println(member2.getName());
+//
+//		for (int i=26; i<= 100; i++) {
+//			Board board = new Board();
+//			board.setMember(member2);
+//			board.setTitle(member2.getName() + "가 등록한 게시글 " + i);
+//			board.setContent(member2.getName() + "가 등록한 게시글 내용 " + i);
+//			boardRepo.save(board);
+//		}
 	}
 
 //	@Test
