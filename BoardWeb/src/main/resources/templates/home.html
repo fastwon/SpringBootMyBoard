@@ -9,9 +9,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <body th:align="center">
 
 	<header>
-		<div th:replace="/entire/head :: header"></div>
+		<div th:replace="entire/head :: header"></div>
 	</header>
-	<div th:replace="/entire/fastLink :: fastLink"></div>
+	<div th:replace="entire/fastLink :: fastLink"></div>
 	
 	<br>
 	<h2>&lt;최근 일주일 조회수 TOP3&gt;</h2>
@@ -36,7 +36,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						<td>
 							<a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a>
 							<img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18">
-							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'">
+							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'"/>
 						</td>
 						<td th:text="${board.member.name}" th:align="center">
 						<td th:text="${board.cnt}" th:align="center">
@@ -57,7 +57,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						<td>
 							<a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a>
 							<img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18">
-							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'">
+							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'"/>
 						</td>
 						<td th:text="${board.member.name}" th:align="center">
 						<td th:text="${board.cnt}" th:align="center">
@@ -85,7 +85,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						<td>
 							<a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a>
 							<img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18">
-							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'">
+							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'"/>
 						</td>
 						<td th:text="${board.member.name}" th:align="center">
 						<td th:text="${board.cnt}" th:align="center">
@@ -107,7 +107,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						<td>
 							<a th:href="@{/board/getBoard(seq=${board.seq})}" th:text="${board.title}"></a>
 							<img th:if="${board.photoUrl != null}" th:src="@{/uploads/photo_icon.png}" th:width="18">
-							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'">
+							<th:block th:if="${board.commentList.size()} != 0" th:text="'[' + ${board.commentList.size()} + ']'"/>
 						</td>
 						<td th:text="${board.member.name}" th:align="center">
 						<td th:text="${board.cnt}" th:align="center">
@@ -143,6 +143,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     };
     </script> -->
     
-    <div th:replace="/entire/foot :: foot"></div>
+    <div th:replace="entire/foot :: foot"></div>
 </body>
 </html>

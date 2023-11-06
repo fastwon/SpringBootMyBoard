@@ -112,7 +112,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <body th:align="center">
 
 	<header>
-		<div th:replace="/entire/head :: header"></div>
+		<div th:replace="entire/head :: header"></div>
 	</header>
 
 <h1>게시글 등록</h1>
@@ -183,6 +183,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</script>
 <a th:href="@{/board/getBoardList(category=${category})}">글목록</a>
 
-    <div th:replace="/entire/foot :: foot"></div>
+    <div th:replace="entire/foot :: foot"></div>
 </body>
 </html>

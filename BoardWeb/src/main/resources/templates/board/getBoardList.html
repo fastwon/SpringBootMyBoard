@@ -11,7 +11,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <body th:align="center">
 
 	<header>
-		<div th:replace="/entire/head :: header"></div>
+		<div th:replace="entire/head :: header"></div>
 	</header>
 	<h2>
 	<a th:href="@{/board/getBoardList(category='GAME')}" th:classappend="${category} == 'GAME' ? 'current'">게임</a>&nbsp;&nbsp;&nbsp;
@@ -99,7 +99,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <br>
 <a th:href="@{/board/insertBoard(category=${category})}">글등록</a>
 
-	    <div th:replace="/entire/foot :: foot"></div>
+	    <div th:replace="entire/foot :: foot"></div>
 
 </body>
 </html>

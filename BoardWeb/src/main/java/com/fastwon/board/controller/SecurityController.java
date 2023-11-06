@@ -26,10 +26,9 @@ public class SecurityController {
 	private MemberRepository memberRepo;
 
 	@GetMapping("/system/login")
-	public String login(@RequestParam(value = "error", required = false)String error, @RequestParam(value = "exception", required = false)String exception, Model model) {
+	public void login(@RequestParam(value = "error", required = false)String error, @RequestParam(value = "exception", required = false)String exception, Model model) {
 		model.addAttribute("error", error);
 		model.addAttribute("exception", exception);
-		return "/system/login";
 	}
 	
 	@GetMapping("/system/accessDenied")
