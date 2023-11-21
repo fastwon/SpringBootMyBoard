@@ -51,8 +51,8 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public void insertBoard(Board board) {
-		String response = lambdaInvoker.invokeLambdaFunction("trimVideo", "{}");
-		board.setContent(board.getContent()+ response);
+//		String response = lambdaInvoker.invokeLambdaFunction("trimVideo", "{}");
+//		board.setContent(board.getContent()+ response);
 
 		boardRepo.save(board);
 	}
@@ -121,11 +121,12 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void uploadFiles(Board board, MultipartFile file, double vStart, double vLength, double duration, String nameFile) throws IOException, FirebaseAuthException {
 		
-	    Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
-	    
+		Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+
 	    if(file.getContentType().contains("image") || duration == vLength) {
-	    	
-	    	
+
+//	    	Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+
 	    	InputStream content = new ByteArrayInputStream(file.getBytes());
 			
 			bucket.create(nameFile.toString(), content, file.getContentType());
@@ -147,24 +148,52 @@ public class BoardServiceImpl implements BoardService {
 	    board.setContent(logContent);
 
 	    // 2. 원본 파일 편집하여 새 파일 생성하기
-	    String outputPath = tempDirWithPrefix.toString() + "/output.mp4";
-	    
+//	    String outputPath = tempDirWithPrefix.toString() + "/output.mp4";
+	    String outputPath = "/tmp/output.mp4";
+
 	    logContent += "3" + outputPath + "\n";
 	    board.setContent(logContent);
 	    
 //	    VideoProcessing.trimVideo(tempFile.getAbsolutePath(), outputPath, vStart, vLength);
 
-	    logContent += "4" + VideoProcessing.trimVideo(tempFile.getAbsolutePath(), outputPath, vStart, vLength);
-	    board.setContent(logContent);
+		String inputPath = tempFile.getAbsolutePath().replace("\\", "/");
+		outputPath = outputPath.replace("\\", "/");
+
+
+		String inputJson = "{"
+				+ "\"inputPath\": \"" + inputPath + "\","
+				+ "\"outputPath\": \"" + outputPath + "\","
+				+ "\"start\": " + vStart + ","
+				+ "\"duration\": " +vLength
+				+ "}";
+//		lambdaInvoker.invokeLambdaFunction("handleRequest", inputJson);
+
+
+
+//	    logContent += "4" + lambdaInvoker.invokeLambdaFunction("trimVideo", inputJson);
+		System.out.println("----------------------------------");
+		System.out.println("----------------------------------");
+		System.out.println("----------------------------------");
+		System.out.println("----------------------------------");
+		System.out.println("----------------------------------");
+		System.out.println(lambdaInvoker.invokeLambdaFunction("trimVideo", inputJson));
+		System.out.println(file.getContentType());
+		System.out.println(nameFile);
+		System.out.println(inputPath);
+		System.out.println("----------------------------------");
+		System.out.println("----------------------------------");
+		System.out.println("----------------------------------");
+		System.out.println("----------------------------------");
+		System.out.println("----------------------------------");
 
 	    // 3. 새 파일을 Firebase Storage에 업로드하기 
-		FileInputStream contentStream = new FileInputStream(outputPath);
-		bucket.create(nameFile.toString(), contentStream , file.getContentType());
-		contentStream.close();
+//		FileInputStream contentStream = new FileInputStream(outputPath);
+//		bucket.create(nameFile.toString(), contentStream , file.getContentType());
+//		contentStream.close();
 
 		// 임시파일 삭제
-		tempFile.delete();
-		new File(outputPath).delete();
+//		tempFile.delete();
+//		new File(outputPath).delete();
 
 	}
 

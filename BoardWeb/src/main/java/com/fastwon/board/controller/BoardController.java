@@ -122,7 +122,7 @@ public class BoardController {
 	    // 사진 파일 처리 로직
 	    if (!media.isEmpty()) { // 파일이 비어있지 않다면 처리
 	        // 원하는 경로에 파일을 저장
-	        String fileName = StringUtils.cleanPath(Objects.requireNonNull(media.getOriginalFilename())) + System.currentTimeMillis();
+	        String fileName = System.currentTimeMillis() + StringUtils.cleanPath(Objects.requireNonNull(media.getOriginalFilename()));
 	        
 	        try {
 	            // Firebase Storage에 이미지 업로드하고 URL 받아오기
