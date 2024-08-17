@@ -114,7 +114,7 @@ public class BoardController {
 	
 	@PostMapping("/insertBoard")
 	public String insertBoard(Board board, @RequestParam("media") MultipartFile media, @RequestParam("youtube") String youtube, 
-			@RequestParam("vStart") String vStart, @RequestParam("vEnd") String vEnd, @RequestParam("duration") String duration, @AuthenticationPrincipal SecurityUser principal, RedirectAttributes redirect) {
+			@AuthenticationPrincipal SecurityUser principal, RedirectAttributes redirect) {
 	    board.setMember(principal.getMember());
 	    
 	    
@@ -127,12 +127,12 @@ public class BoardController {
 	        try {
 	            // Firebase Storage에 이미지 업로드하고 URL 받아오기
 	            String imageUrl = "https://firebasestorage.googleapis.com/v0/b/fastwonboard.appspot.com/o/" + fileName + "?alt=media";
-        		boardService.uploadFiles(board, media, Double.parseDouble(vStart), Double.parseDouble(vEnd) - Double.parseDouble(vStart), Double.parseDouble(duration), fileName);
+        		boardService.uploadFiles(media, fileName);
 	            
 	            // board 객체에 이미지 URL을 저장하는 필드를 추가
 	            board.setPhotoUrl(imageUrl);
 	            
-	        } catch (IOException | FirebaseAuthException e) {
+	        } catch (IOException e) {
 	            // 파일 저장 중 오류 처리
 	            e.printStackTrace();
 	        }

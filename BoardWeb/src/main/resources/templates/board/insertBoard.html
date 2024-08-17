@@ -37,7 +37,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                         
                     } else if (fileType.startsWith('video')) { // 동영상일 경우 video 태그로 미리보기
 			            var videoPreview = document.getElementById('videoPreview');
-			            var videoLen = document.getElementsByClassName('videoLen');
+			            /* var videoLen = document.getElementsByClassName('videoLen'); */
                         var source = document.createElement('source');
 
                         source.src = e.target.result;
@@ -49,10 +49,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                     	videoPreview.load();
                     	
     					videoPreview.style.display='block'; 	
-    					videoLen[0].style.display = 'table-row';
-    		            videoLen[1].style.display = 'table-row';
+    					/* videoLen[0].style.display = 'table-row'; */
+    		            /* videoLen[1].style.display = 'table-row'; */
     		            
-    		            videoPreview.onloadedmetadata = function() {
+    		            /* videoPreview.onloadedmetadata = function() {
     		            	var inputTag = videoLen[0].getElementsByTagName('input')[0];
     		            	inputTag.setAttribute('max', Math.max(Math.floor(this.duration * 10) / 10 - 2, 0));
     		            	
@@ -62,7 +62,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
     		            	var inputTag3 = videoLen[2].getElementsByTagName('input')[0];
     		            	inputTag3.value = Math.floor(this.duration * 10) / 10;
-   		            	};
+   		            	}; */
     		            
     		            if(document.getElementById('imagePreview') != null) {
     		            	var imagePreview = document.getElementById('imagePreview');
@@ -80,13 +80,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                	imagePreview.style.display='none';	
                 
                	var videoPreview = document.getElementById('videoPreview');
-                var videoLen = document.getElementsByClassName('videoLen');
+                /* var videoLen = document.getElementsByClassName('videoLen'); */
             	
             	videoPreview.innerHTML='';
             	videoPreview.load();
     			videoPreview.style.display='none'; 	
-    			videoLen[0].style.display = 'none';
-                videoLen[1].style.display = 'none';
+    			/* videoLen[0].style.display = 'none';
+                videoLen[1].style.display = 'none'; */
             }
         }
 
@@ -144,7 +144,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	    <tr th:if = "${category} != MUSIC">
 	        <td colspan="2" th:align="center"><img class="boardImg" id='imagePreview' src='#' alt='your image' /><video id="videoPreview" controls></video></td>
 	    </tr>
-	    <tr class="videoLen">
+	    
+	    <!-- <tr class="videoLen">
 	    	<td>시작</td>
 	    	<td><input type="number" name="vStart" th:value="0" step="0.1" min="0"/>초</td>
 	    </tr>
@@ -155,7 +156,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	    <tr class="videoLen">
 	    	<td>길이</td>
 	    	<td><input type="text" name="duration" th:value="2"/>초</td>
-	    </tr>
+	    </tr> -->
+	    
 		<tr>
 			<td class="tagBox" th:text="내용">
 			<td><textarea name="content" cols="50" rows="10" maxlength="255"></textarea></td>
