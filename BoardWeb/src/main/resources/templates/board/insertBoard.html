@@ -170,7 +170,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</table>
 
 </form>
-	<script>
+<!-- 	<script>
 		var inputEnd = document.querySelector('input[name="vEnd"]');
 		var inputStart = document.querySelector('input[name="vStart"]');
 		var videoPlayer = document.getElementById('videoPreview');
@@ -182,7 +182,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		inputEnd.addEventListener('change', function() {
 			videoPlayer.currentTime = inputEnd.value;
 		});
-	</script>
+	</script> -->
 <a th:href="@{/board/getBoardList(category=${category})}">글목록</a>
 
     <div th:replace="entire/foot :: foot"></div>

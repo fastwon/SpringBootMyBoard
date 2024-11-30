@@ -12,8 +12,8 @@ function checkValid() {
 	let mInput = document.isbForm.media;
 	let yInput = document.isbForm.youtube;
 
-	let vStart = document.isbForm.vStart.value;	
-	let vEnd = document.isbForm.vEnd.value;	
+/*	let vStart = document.isbForm.vStart.value;	
+	let vEnd = document.isbForm.vEnd.value;	*/
 	
 	if(category == 'GAME') {
 		if(!mInput.value) {
@@ -22,10 +22,10 @@ function checkValid() {
 			return false;
 		}
 		
-		if(vStart > (vEnd - 2)) {
+		/*if(vStart > (vEnd - 2)) {
 			alert("동영상의 길이는 2초 이상이어야합니다.");
 			return false;
-		}
+		}*/
 	}
 	
 	if(category == 'FOOTBALL') {
