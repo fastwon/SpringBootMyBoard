@@ -101,9 +101,6 @@ public class BoardServiceImpl implements BoardService {
 	@Value("${app.firebase-bucket}")
 	private String firebaseBucket;
 
-	@Value("${cloud.aws.s3.bucket}")
-	private String s3bucket;
-
 
 	@Override
 	public void uploadFiles(MultipartFile file, String nameFile) throws IOException {
